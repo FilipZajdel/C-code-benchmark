@@ -3,8 +3,8 @@ import numpy as np
 from ctypes import cast, POINTER
 
 void = None
-#dll = C_DLL(r"DLL/ByteTranspose/bin/bytetranspose.so")
-dll = C_DLL(r"C:\\Users\\Filip\\Downloads\\DLL_V2\\DLL\\DLL\\x64\\Release\\ByteTranspose.dll")
+dll = C_DLL(r"DLL/ByteTranspose/bin/bytetranspose.so")
+#dll = C_DLL(r"C:\\Users\\Filip\\Downloads\\DLL_V2\\DLL\\DLL\\x64\\Release\\ByteTranspose.dll")
 
 # void WINAPI TransposeByte8x8(BYTE * source, BYTE * dest,)
 prototype = C_FUNCTYPE(void, POINTER(BYTE),POINTER(BYTE))
