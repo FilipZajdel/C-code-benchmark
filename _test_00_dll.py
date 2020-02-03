@@ -2,6 +2,35 @@ from decoder import *
 from types import *
 from ctypes import cast
 import time
+import timeit
+
+class PerformanceTester:
+    def __init__(self, function, name, *args, **kvargs):
+        self.__tested_subject = function
+        self.__tested_args = args
+        self.__tested_kvargs = kvargs
+        self.__avg_exec_time = 0
+
+        self.__report_current_avg = 0
+        self.__report_last_subject = name
+    
+    def meas_exec_time(self, times=1):
+        
+        all_exec_time = 0
+        for _ in range(times):
+            start = timeit.default_timer()
+            self.__tested_subject(*self.__tested_args, *self.__tested_kvargs)
+            stop = timeit.default_timer()
+            
+            all_exec_time += (stop-start)
+        
+        self.__report_current_avg = all_exec_time/times
+    
+    def get_report(self):
+        report = {}
+        report["avg_time"] = self.__report_current_avg
+        return report
+
 
 def Test_Deinterleve_16Bytes_to_2x8Bytes():
     arr_in = (BYTE * 16)(1,11,2,22,3,33,4,44,5,55,6,66,7,77,8,88)
@@ -39,7 +68,8 @@ def Test_TransposeByte8x8():
             print()
         print ((('{0:08b}'.format(0x0ff & b)).replace('0','-')))
 
-    TransposeByte8x8(arr,brr)
+    performanceTester = PerformanceTester(TransposeByte8x8, "TransposeByte8x8", arr, brr)
+    performanceTester.meas_exec_time(10000)
 
     print ("\noutput")
     for i,b in enumerate(brr):     
@@ -47,6 +77,7 @@ def Test_TransposeByte8x8():
             print()
         print ((('{0:08b}'.format(0x0ff & b)).replace('0','-')))
 
+    return performanceTester.get_report()
         
 
 def Test_TransposeBits_16xI8_to_8xI16():
@@ -229,10 +260,13 @@ def Test_TransposeWords16x16():
             print()
         print ((('{0:16b}'.format(0xffff & b)).replace('0','-').replace(' ','-')))
 
-    TransposeWords16x16(arr,brr)
+    performanceTester = PerformanceTester(TransposeWords16x16, "TransposeWords16x16",arr, brr)
+    performanceTester.meas_exec_time(10000)
 
     print ("\noutput")
     for i,b in enumerate(brr):     
         if (i%16)==0:
             print()
         print ((('{0:16b}'.format(0xffff & b)).replace('0','-').replace(' ','-')))
+    
+    return performanceTester.get_report()
