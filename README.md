@@ -15,6 +15,9 @@ performance.
 
 ## Results
 
+Results are collected in directory [Results](https://github.com/FilipZajdel/ByteTranspose/tree/master/Results) 
+
+
 After execution of tests, results are written to json file in specified format:
 
 ```json
