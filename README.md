@@ -15,5 +15,19 @@ performance.
 
 ## Results
 
-This field is going to be filled with results, as soon as tests starts.
+After execution of tests, results are written to json file in specified format:
 
+```json
+{
+    "datetime":"",
+    "platform":"",
+    "functions":{
+        "dummy_name":{
+            "avg_time": Double
+        },
+        "dummt_name2":{
+            "avg_time": Double
+        }
+    }
+}
+```
