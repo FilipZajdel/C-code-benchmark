@@ -8,7 +8,7 @@ def save_report_as_json(filename, report):
         json.dump(report, f_report)
 
 def current_time_as_str():
-    return datetime.now().strftime("%m-%d-%Y-%H:%M:%S")
+    return datetime.now().strftime("%m-%d-%Y-%H-%M-%S")
 
 
 if __name__ == "__main__":
