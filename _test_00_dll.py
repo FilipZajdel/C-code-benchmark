@@ -1,8 +1,9 @@
 from decoder import *
 from types import *
-from ctypes import cast
+from ctypes import cast, c_byte
 import time
 import timeit
+import numpy as np
 
 class PerformanceTester:
     def __init__(self, function, name, *args, **kvargs):
@@ -269,4 +270,17 @@ def Test_TransposeWords16x16():
             print()
         print ((('{0:16b}'.format(0xffff & b)).replace('0','-').replace(' ','-')))
     
+    return performanceTester.get_report()
+
+def Test_decode_chip_byte_stream_to_pixel_array():
+
+    bytestream = []
+    with open("bytestream.bin", "rb") as fbstream:
+        bytestream = fbstream.read()
+    
+    bytestream = (c_byte*len(bytestream))(*bytestream)
+    
+    performanceTester = PerformanceTester(decode_chip_byte_stream_to_pixel_array, \
+        "decode_chip_byte_stream_to_pixel_array", bytestream)
+    performanceTester.meas_exec_time()
     return performanceTester.get_report()

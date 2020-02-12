@@ -33,6 +33,7 @@ prototype = C_FUNCTYPE(void, POINTER(WORD),POINTER(WORD),DWORD)
 TransposeBits_14xI16_to_16xI16 = prototype(("TransposeBits_14xI16_to_16xI16", dll))
 
 def decode_chip_byte_stream_to_pixel_array(byte_stream): 
+# def decode(byte_stream):
     len_byte_stream = len(byte_stream)            
     Deinterleve_16Bytes_to_2x8Bytes(byte_stream,len_byte_stream//16)    
     TransposeBits_16xI8_to_8xI16(byte_stream,len_byte_stream//16)        
@@ -44,4 +45,3 @@ def decode_chip_byte_stream_to_pixel_array(byte_stream):
     
     ctrs = np.ctypeslib.as_array(ctrs)    
     return ctrs.reshape((len(ctrs)//(2*256*128),2,256,128)) # frame,ctr,column,row    
-
