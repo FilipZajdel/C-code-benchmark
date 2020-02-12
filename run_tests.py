@@ -2,6 +2,7 @@ import _test_00_dll as dll_tests
 from datetime import datetime
 import sys
 import json
+from cpuinfo import get_cpu_info
 
 def save_report_as_json(filename, report):
     with open(f"{filename}.json", "w") as f_report:
@@ -13,7 +14,7 @@ def current_time_as_str():
 
 if __name__ == "__main__":
     report = {"datetime":current_time_as_str(), "platform": f"{sys.platform}",
-    "functions":{}}
+    "functions":{}, "cpu":get_cpu_info()["brand"]}
     now = current_time_as_str()
     report_dir = "Results"
 
