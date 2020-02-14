@@ -7,7 +7,7 @@ LIB_NAME=bytetranspose
 
 all:
 	mkdir -p $(LIB_OUT)
-	$(CC) -O3 -fPIC -c $(SRC) -o $(LIB_OUT)/$(LIB_NAME).o
+	$(CC) -fPIC -c -o3 $(SRC) -o $(LIB_OUT)/$(LIB_NAME).o
 	$(CC) -shared $(LIB_OUT)/*.o -o $(LIB_OUT)/$(LIB_NAME).so
 
 clean:

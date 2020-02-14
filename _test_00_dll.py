@@ -274,12 +274,14 @@ def Test_TransposeWords16x16():
 
 def Test_decode_chip_byte_stream_to_pixel_array():
 
+    print("Loading Bytestream...")
     bytestream = []
     with open("bytestream.bin", "rb") as fbstream:
         bytestream = fbstream.read()
     
     bytestream = (c_byte*len(bytestream))(*bytestream)
     
+    print("Bytestream Loaded")
     performanceTester = PerformanceTester(decode_chip_byte_stream_to_pixel_array, \
         "decode_chip_byte_stream_to_pixel_array", bytestream)
     performanceTester.meas_exec_time()
