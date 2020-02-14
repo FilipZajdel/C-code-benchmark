@@ -1,1 +1,13 @@
-{"datetime": "02-12-2020-12-36-59", "platform": "linux", "functions": {"TransposeWords16x16": {"avg_time": 6.363144000658849e-06}, "TransposeWords8x8": {"avg_time": 4.892148299472865e-06}}, "cpu": "ARMv7 Processor rev 3 (v7l)"}
+{
+    "datetime": "02-12-2020-12-36-59",
+    "platform": "linux",
+    "functions": {
+        "TransposeWords16x16": {
+            "avg_time": 6.363144000658849e-06
+        },
+        "TransposeWords8x8": {
+            "avg_time": 4.892148299472865e-06
+        }
+    },
+    "cpu": "ARMv7 Processor rev 3 (v7l)"
+}

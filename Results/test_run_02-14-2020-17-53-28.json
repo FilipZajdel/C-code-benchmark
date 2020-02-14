@@ -1,17 +1,17 @@
 {
-    "datetime": "02-12-2020-21-32-17",
+    "datetime": "02-14-2020-17-53-26",
     "platform": "linux",
     "functions": {
         "TransposeWords16x16": {
-            "avg_time": 1.7806396997912089e-06
+            "avg_time": 1.713729984840029e-06
         },
         "TransposeWords8x8": {
-            "avg_time": 1.4638172262493755e-06
+            "avg_time": 1.7068279641534901e-06
         },
         "decode_chip_byte_stream_to_pixel_array": {
-            "avg_time": 82.908
+            "avg_time": 9.357596948000719
         }
     },
     "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",
-    "description": "1.146GB Bytestream"
+    "description": "114MB Bytestream"
 }

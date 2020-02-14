@@ -71,6 +71,9 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed"):
                         text(report.get("platform", "platform?"))
                         doc.stag("br")
                         text(report.get("cpu", ""))
+                        if "description" in report:
+                            doc.stag("hr")
+                            text(report.get("description", ""))
                     for func_name in func_names:
                         with tag("td"):
                             if func_name in report.get("functions"):
