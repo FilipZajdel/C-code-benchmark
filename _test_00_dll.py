@@ -14,6 +14,8 @@ class PerformanceTester:
 
         self.__report_current_avg = 0
         self.__report_last_subject = name
+        self.__report_last_repeats = 0
+        self.__additional_info = None
     
     def meas_exec_time(self, times=1):
         
@@ -26,10 +28,20 @@ class PerformanceTester:
             all_exec_time += (stop-start)
         
         self.__report_current_avg = all_exec_time/times
+        self.__report_last_repeats = times
+    
+    def add_to_report(self, kv_info):
+        self.__additional_info = kv_info
     
     def get_report(self):
         report = {}
         report["avg_time"] = self.__report_current_avg
+        report["repeats"] = self.__report_last_repeats
+
+        if self.__additional_info is not None:
+            for k,v in self.__additional_info.items():
+                report[k] = v
+
         return report
 
 
@@ -280,9 +292,11 @@ def Test_decode_chip_byte_stream_to_pixel_array():
         bytestream = fbstream.read()
     
     bytestream = (c_byte*len(bytestream))(*bytestream)
-    
-    print("Bytestream Loaded")
+    print(f"Bytestream of size {len(bytestream)} Loaded")
+
     performanceTester = PerformanceTester(decode_chip_byte_stream_to_pixel_array, \
         "decode_chip_byte_stream_to_pixel_array", bytestream)
-    performanceTester.meas_exec_time()
+    performanceTester.meas_exec_time(1)
+    performanceTester.add_to_report({"buffer_size": f"{len(bytestream)/1000000} MB"})
+    
     return performanceTester.get_report()

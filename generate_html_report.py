@@ -4,14 +4,6 @@ import json
 
 doc, tag, text = Doc().tagtext()
 
-raport = {"functions": {
-    "function1": {"PC_linux": 0.234, "PC_Win": 0.5, "RPi_Linux": 0.4},
-    "function2": {"PC_linux": 0.112, "PC_Win": 0.5, "RPi_Linux": 0.4},
-    "function3": {"PC_linux": 0.119, "PC_Win": 0.5, "RPi_Linux": 0.4}
-}
-}
-
-
 def load_json_reports(directory):
     files = [d for d in os.listdir(directory) if ".json" in d]
     merged_report = {}
@@ -33,6 +25,40 @@ def get_function_names(reports):
 
     return names
 
+def get_data_of_function(reports, function, group = False, group_key=None):
+    """ Returns list of tuples in format: [(CPU, OS, Num of repeats, Buffer size, Executed Time)] """
+    data = []
+    group_keys = ["cpu", "os", "repeats", "buffer_size", "avg_time"]
+
+    for report in reports.values():
+        if function in report.get("functions", ""):
+            cpu = report.get("cpu", "")    
+            os = report.get("platform", "")
+            repeats = report["functions"].get(function).get("repeats", "")
+            buffer_size = report["functions"].get(function).get("buffer_size", "-")
+            time_elapsed = report["functions"].get(function).get("avg_time")
+            time_elapsed = expsec_to_sec_postfix(time_elapsed)
+            data.append((cpu, os, repeats, buffer_size, time_elapsed))
+    
+    if group and group_key in group_keys:
+        groups = []
+        idx_of_group = group_keys.index(group_key)
+
+        for d in data:
+            value = d[idx_of_group]
+
+            if value not in groups:
+                groups.append(value)
+        new_data = []
+
+        for gr in groups:
+            for d in data:
+                if d[idx_of_group] == gr:
+                    new_data.append(d)
+
+        data = new_data
+
+    return data
 
 def expsec_to_sec_postfix(val, precision=3):
     if val > 1:
@@ -48,41 +74,42 @@ with tag("head"):
     doc.stag("link", rel="icon", href="static/img/logo.ico")
     doc.stag("meta", charset="UTF-8")
     doc.asis(
-        "<style>table,th,td{border:1px solid magenta; border-collapse: collapse}</style>")
+        "<style>table,th,td{border:2px solid gray; border-collapse: collapse}</style>")
 
-with tag("body", style="background: url(\"static/img/prism.png\") fixed"):
+with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: black"):
     with tag("title"):
         text("Byte Transpose Performance Tests")
+    
+    headers = ("CPU", "OS", "Number of Repeats", "Buffer size", "Execution time")
+    reports = load_json_reports("Results")
+    functions = get_function_names(reports)
 
-    with tag("div", style="margin: auto; width: 75%; background-color: white; opacity: 0.5"):
-        with tag("table", style="width: 100%"):
-            reports = load_json_reports("Results")
-            func_names = get_function_names(reports)
-            columns = ["", *func_names]
+    with tag("div", style="margin: auto; width: 75%; text-align: center"):
+        with tag("h", style="font-size: 150%; font-color: rgb(99,91,88)"):
+            text("Summary of timing tests of C functions on different operating systems and CPUs")
+        
+        doc.stag("br")        
+        doc.stag("hr")
+        doc.stag("br")  
 
-            with tag("tr", style="font-size: 150%"):
-                for column_name in columns:
-                    with tag("th"):
-                        text(column_name)
 
-            for report in reports.values():
-                with tag("tr", style="text-align:center; font-size: 130%"):
-                    with tag("td"):
-                        text(report.get("platform", "platform?"))
-                        doc.stag("br")
-                        text(report.get("cpu", ""))
-                        if "description" in report:
-                            doc.stag("hr")
-                            text(report.get("description", ""))
-                    for func_name in func_names:
-                        with tag("td"):
-                            if func_name in report.get("functions"):
-                                time = report.get("functions").get(
-                                    func_name, "-").get("avg_time")
-                                time = expsec_to_sec_postfix(time)
-                                text(f"{time}")
-                            else:
-                                text("-")
+        for function in functions:
+            with tag("h", style="font-size:200%; font-color: rgb(99,91,88)"):
+                text(function)
+            with tag("table", style="width: 100%"):
+                with tag("tr", style="font-size: 120%"):
+                    for header in headers:
+                        with tag("th"):
+                            text(header)
+
+                for data_set in get_data_of_function(reports, function, group=True, group_key="buffer_size"):
+                    with tag("tr"):
+                        for column in data_set:
+                            with tag("td", style="text-align:center"):
+                                text(column)
+                       
+            doc.stag("br")
+            doc.stag("br")
 
 with open("docs/index.html", "w") as html_file:
     html_file.write(doc.getvalue())

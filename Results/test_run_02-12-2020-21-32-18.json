@@ -3,15 +3,18 @@
     "platform": "linux",
     "functions": {
         "TransposeWords16x16": {
-            "avg_time": 1.7806396997912089e-06
+            "avg_time": 1.7806396997912089e-06,
+            "repeats": 10000
         },
         "TransposeWords8x8": {
-            "avg_time": 1.4638172262493755e-06
+            "avg_time": 1.4638172262493755e-06,
+            "repeats": 10000
         },
         "decode_chip_byte_stream_to_pixel_array": {
-            "avg_time": 82.908
+            "avg_time": 82.908,
+            "buffer_size": "1.146 GB",
+            "repeats": 1
         }
     },
-    "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",
-    "description": "1.146GB Bytestream"
+    "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz"
 }

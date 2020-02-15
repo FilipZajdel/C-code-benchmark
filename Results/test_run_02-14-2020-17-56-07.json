@@ -3,15 +3,18 @@
     "platform": "linux",
     "functions": {
         "TransposeWords16x16": {
-            "avg_time": 6.160166309564374e-06
+            "avg_time": 6.160166309564374e-06,
+            "repeats": 10000
         },
         "TransposeWords8x8": {
-            "avg_time": 5.072421804652549e-06
+            "avg_time": 5.072421804652549e-06,
+            "repeats": 10000
         },
         "decode_chip_byte_stream_to_pixel_array": {
-            "avg_time": 23.207336935000058
+            "avg_time": 23.207336935000058,
+            "buffer_size": "114.688 MB",
+            "repeats": 1
         }
     },
-    "cpu": "ARMv7 Processor rev 3 (v7l)",
-    "description": "114MB Bytestream"
+    "cpu": "ARMv7 Processor rev 3 (v7l)"
 }
