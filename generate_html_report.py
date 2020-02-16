@@ -92,7 +92,6 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
         doc.stag("hr")
         doc.stag("br")  
 
-
         for function in functions:
             with tag("h", style="font-size:200%; font-color: rgb(99,91,88)"):
                 text(function)

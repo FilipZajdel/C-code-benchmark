@@ -1,6 +1,6 @@
 from types_wrapper import *
 import numpy as np
-from ctypes import cast, POINTER
+from ctypes import cast, POINTER, c_char
 
 void = None
 dll = C_DLL(r"DLL/ByteTranspose/bin/bytetranspose.so")
@@ -29,8 +29,12 @@ prototype = C_FUNCTYPE(void, POINTER(WORD), DWORD)
 Deinterleve_14x8Words_to_8x14Words = prototype(("Deinterleve_14x8Words_to_8x14Words", dll))
 
 # void WINAPI TransposeBits_14xI16_to_16xI16(WORD* source, WORD* destination, DWORD chunks)
-prototype = C_FUNCTYPE(void, POINTER(WORD),POINTER(WORD),DWORD)
+prototype = C_FUNCTYPE(void, POINTER(WORD),POINTER(WORD), DWORD)
 TransposeBits_14xI16_to_16xI16 = prototype(("TransposeBits_14xI16_to_16xI16", dll))
+
+# BYTE_TRANSPOSE_API  void WINAPI GenerateRandomBytestream(BYTE* destination, DWORD size, DWORD seed)
+prototype = C_FUNCTYPE(void, POINTER(BYTE), DWORD, DWORD)
+GenerateRandomBytestream = prototype(("GenerateRandomBytestream", dll))
 
 def decode_chip_byte_stream_to_pixel_array(byte_stream): 
 # def decode(byte_stream):

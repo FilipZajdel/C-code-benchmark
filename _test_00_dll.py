@@ -1,6 +1,6 @@
 from decoder import *
 from types import *
-from ctypes import cast, c_byte
+from ctypes import cast, c_byte, create_string_buffer, c_ulong
 import time
 import timeit
 import numpy as np
@@ -286,17 +286,13 @@ def Test_TransposeWords16x16():
 
 def Test_decode_chip_byte_stream_to_pixel_array():
 
-    print("Loading Bytestream...")
-    bytestream = []
-    with open("bytestream.bin", "rb") as fbstream:
-        bytestream = fbstream.read()
-    
-    bytestream = (c_byte*len(bytestream))(*bytestream)
-    print(f"Bytestream of size {len(bytestream)} Loaded")
+    bytestream_size = 114688000
+    bytestream = (BYTE*bytestream_size)()
+    GenerateRandomBytestream(bytestream, DWORD(bytestream_size), DWORD(np.random.randint(timeit.default_timer())))
 
     performanceTester = PerformanceTester(decode_chip_byte_stream_to_pixel_array, \
         "decode_chip_byte_stream_to_pixel_array", bytestream)
     performanceTester.meas_exec_time(1)
     performanceTester.add_to_report({"buffer_size": f"{len(bytestream)/1000000} MB"})
-    
+
     return performanceTester.get_report()

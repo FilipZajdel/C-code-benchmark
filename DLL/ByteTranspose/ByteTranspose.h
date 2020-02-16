@@ -29,6 +29,8 @@ extern "C" {
 
     BYTE_TRANSPOSE_API  void WINAPI TransposeBits_14xI16_to_16xI16(WORD* source, WORD* destination, DWORD chunks);
 
+    BYTE_TRANSPOSE_API  void WINAPI GenerateRandomBytestream(BYTE* destination, DWORD size, DWORD seed);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

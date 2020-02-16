@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ByteTranspose.h"
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 void WINAPI Deinterleve_16Bytes_to_2x8Bytes(BYTE *pbSource, DWORD count)
 {
@@ -444,5 +446,14 @@ void WINAPI TransposeBits_14xI16_to_16xI16(WORD *source, WORD *destination, DWOR
         }
         source += 14;
         destination += 16;
+    }
+}
+
+BYTE_TRANSPOSE_API  void WINAPI GenerateRandomBytestream(BYTE* destination, DWORD size, DWORD random_seed) {
+    
+    srand(random_seed);
+
+    for (long int byte_ctr = 0; byte_ctr < size; byte_ctr++) {
+        destination[byte_ctr] = rand();
     }
 }

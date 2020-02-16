@@ -21,7 +21,7 @@ if __name__ == "__main__":
     report["functions"]["TransposeWords16x16"] = dll_tests.Test_TransposeWords16x16()
     report["functions"]["TransposeWords8x8"] = dll_tests.Test_TransposeByte8x8()
     report["functions"]["decode_chip_byte_stream_to_pixel_array"] = dll_tests.Test_decode_chip_byte_stream_to_pixel_array()
-    report["description"] =  "" # insert here additional description of test
+    report["description"] =  "" # insert here additional description of test if required
 
     save_report_as_json(f"Results/test_run_{now}", report)
     print(f"Results of tests on {sys.platform} run at {now}: \n{report}")
