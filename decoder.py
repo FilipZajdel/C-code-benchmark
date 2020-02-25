@@ -1,6 +1,7 @@
 from types_wrapper import *
 import numpy as np
 from ctypes import cast, POINTER, c_char
+from timeit import default_timer
 
 void = None
 dll = C_DLL(r"DLL/ByteTranspose/bin/bytetranspose.so")
@@ -37,15 +38,29 @@ prototype = C_FUNCTYPE(void, POINTER(BYTE), DWORD, DWORD)
 GenerateRandomBytestream = prototype(("GenerateRandomBytestream", dll))
 
 def decode_chip_byte_stream_to_pixel_array(byte_stream): 
-# def decode(byte_stream):
     len_byte_stream = len(byte_stream)            
-    Deinterleve_16Bytes_to_2x8Bytes(byte_stream,len_byte_stream//16)    
-    TransposeBits_16xI8_to_8xI16(byte_stream,len_byte_stream//16)        
+    start = default_timer()
+    Deinterleve_16Bytes_to_2x8Bytes(byte_stream, len_byte_stream//16)   
+    stop = default_timer()
+    print(f"Deinterleve_16Bytes_to_2x8Bytes took {stop - start}") 
+
+    start = default_timer()
+    TransposeBits_16xI8_to_8xI16(byte_stream, len_byte_stream//16)        
+    stop = default_timer() 
+    print(f"TransposeBits_16xI8_to_8xI16 took {stop - start}") 
+    
     byte_stream = cast(byte_stream, POINTER(WORD))      
-    Deinterleve_14x8Words_to_8x14Words(byte_stream,len_byte_stream//(14*8*2))    
+
+    start = default_timer()
+    Deinterleve_14x8Words_to_8x14Words(byte_stream, len_byte_stream//(14*8*2))    
+    stop = default_timer()
+    print(f"Deinterleve_14x8Words_to_8x14Words took {stop - start}")
 
     ctrs = (WORD * ((len_byte_stream*16)//14//2))()     
-    TransposeBits_14xI16_to_16xI16(byte_stream,ctrs,len(ctrs)//16)    
+    start = default_timer()
+    TransposeBits_14xI16_to_16xI16(byte_stream, ctrs, len(ctrs)//16)    
+    stop = default_timer()
+    print(f"TransposeBits_14xI16_to_16xI16 took {stop - start}")
     
     ctrs = np.ctypeslib.as_array(ctrs)    
     return ctrs.reshape((len(ctrs)//(2*256*128),2,256,128)) # frame,ctr,column,row    

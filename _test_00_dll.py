@@ -221,11 +221,13 @@ def Test_TransposeBits_14xI16_to_16xI16():
             0b1000000000000011, 
             0b1000000000000011, 
             0b1000000000000011, 
-            
             ]
     
     chunk_nr = len(arr_in)//14
     
+    gen_arr_len = 1500
+    gen_arr = (BYTE * gen_arr_len)
+    GenerateRandomBytestream(gen_arr, DWORD(gen_arr_len), DWORD(np.random.randint(timeit.default_timer())))
     arr_in= (WORD * (chunk_nr*14))(*arr_in)
     arr_out= (WORD * (chunk_nr*16))() 
     

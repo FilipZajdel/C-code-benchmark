@@ -11,9 +11,20 @@ def save_report_as_json(filename, report):
 def current_time_as_str():
     return datetime.now().strftime("%m-%d-%Y-%H-%M-%S")
 
+def get_platform():
+
+    platform = sys.platform
+
+    if "linux" in platform:
+        return "linux"
+    elif "win" in platform:
+        return "windows"
+    else:
+        return "unknown"    
 
 if __name__ == "__main__":
-    report = {"datetime":current_time_as_str(), "platform": f"{sys.platform}",
+
+    report = {"datetime":current_time_as_str(), "platform": f"{get_platform()}",
     "functions":{}, "cpu":get_cpu_info()["brand"]}
     now = current_time_as_str()
     report_dir = "Results"
@@ -22,6 +33,7 @@ if __name__ == "__main__":
     report["functions"]["TransposeWords8x8"] = dll_tests.Test_TransposeByte8x8()
     report["functions"]["decode_chip_byte_stream_to_pixel_array"] = dll_tests.Test_decode_chip_byte_stream_to_pixel_array()
     report["description"] =  "" # insert here additional description of test if required
+    report["compiler"] = "gcc"  # change to compiler that was used 
 
     save_report_as_json(f"Results/test_run_{now}", report)
     print(f"Results of tests on {sys.platform} run at {now}: \n{report}")

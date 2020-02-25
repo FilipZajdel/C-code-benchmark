@@ -1,1 +1,0 @@
-{"datetime": "02-14-2020-19-48-16", "platform": "linux", "functions": {"TransposeWords16x16": {"avg_time": 6.092965175776044e-06}, "TransposeWords8x8": {"avg_time": 5.0416071913787166e-06}, "decode_chip_byte_stream_to_pixel_array": {"avg_time": 22.74945670899615}}, "cpu": "ARMv7 Processor rev 3 (v7l)", "description": ""}

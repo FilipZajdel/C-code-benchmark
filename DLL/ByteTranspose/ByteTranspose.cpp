@@ -99,7 +99,7 @@ inline void WINAPI TransposeByte8x8(BYTE *source, BYTE *destination)
                       ((source[7] & (1 << 0)) >> 0));
 }
 
-BYTE_TRANSPOSE_API void WINAPI TransposeWords16x16(WORD *source, WORD *destination)
+inline BYTE_TRANSPOSE_API void WINAPI TransposeWords16x16(WORD *source, WORD *destination)
 {
     destination[15] = (((source[0] & (1 << 15)) >> 0) |
                        ((source[1] & (1 << 15)) >> 1) |
@@ -381,7 +381,6 @@ void WINAPI TransposeBits_16xI8_to_8xI16(BYTE *pbSource, DWORD count)
 
     for (DWORD j = 0; j < count; j++)
     {
-
         TransposeByte8x8(pbSource + 0, a);
         TransposeByte8x8(pbSource + 8, b);
 
