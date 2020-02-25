@@ -28,7 +28,7 @@ if __name__ == "__main__":
     report["functions"]["TransposeBits_14xI16_to_16xI16"] = timing_tests.Test_TransposeBits_14xI16_to_16xI16_bytestream()
 
     report["description"] =  "" # insert here additional description of test if required
-    report["compiler"] = "gcc 7.4"
+    report["compiler"] = "gcc 7.4" # insert here used compiler
 
     save_report_as_json(f"Results/test_run_{now}", report)
     print(f"Results of tests on {sys.platform} run at {now}: \n{report}")
