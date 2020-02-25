@@ -114,12 +114,11 @@ def Test_TransposeBits_16xI8_to_8xI16_bytestream(bytestream_size=1146880000):
 def Test_Deinterleve_14x8Words_to_8x14Words_bytestream(bytestream_size=1146880000):
 
     data_in = np.ctypeslib.as_ctypes(np.random.randint(low=0, high=2**7-1, \
-                dtype=np.uint16, size=bytestream_size)) 
+                dtype=np.uint16, size=bytestream_size//2)) 
     
-    Deinterleve_14x8Words_to_8x14Words(data_in, bytestream_size//(14*8))
     performanceTester = PerformanceTester(Deinterleve_14x8Words_to_8x14Words, \
                         "Deinterleve_14x8Words_to_8x14Words",\
-                        data_in, bytestream_size//(14*8))
+                        data_in, bytestream_size//(14*8*2))
 
     performanceTester.meas_exec_time()
     performanceTester.add_to_report({"buffer_size": bytes_number_to_str(bytestream_size)})
@@ -128,9 +127,9 @@ def Test_Deinterleve_14x8Words_to_8x14Words_bytestream(bytestream_size=114688000
 
 def Test_TransposeBits_14xI16_to_16xI16_bytestream(bytestream_size=1146880000):
 
-    chunks_nr = bytestream_size//14
+    chunks_nr = (bytestream_size//2)//14
     data_in = np.ctypeslib.as_ctypes(np.random.randint(low=0, high=2**16-1, \
-                dtype=np.uint16, size=bytestream_size))    
+                dtype=np.uint16, size=bytestream_size/2))    
     data_out = (WORD*(chunks_nr*16))()
 
     performanceTester = PerformanceTester(TransposeBits_14xI16_to_16xI16, "TransposeBits_14xI16_to_16xI16",\

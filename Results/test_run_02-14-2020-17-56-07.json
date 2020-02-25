@@ -17,5 +17,5 @@
         }
     },
     "cpu": "ARMv7 Processor rev 3 (v7l)",
-    "compiler": "gcc Raspbian 8.3"
+    "compiler": "gcc 8.3"
 }
