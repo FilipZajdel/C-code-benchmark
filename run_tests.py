@@ -1,4 +1,4 @@
-import _test_00_dll as dll_tests
+import timing_tests
 from datetime import datetime
 import sys
 import json
@@ -18,9 +18,15 @@ if __name__ == "__main__":
     now = current_time_as_str()
     report_dir = "Results"
 
-    report["functions"]["TransposeWords16x16"] = dll_tests.Test_TransposeWords16x16()
-    report["functions"]["TransposeWords8x8"] = dll_tests.Test_TransposeByte8x8()
-    report["functions"]["decode_chip_byte_stream_to_pixel_array"] = dll_tests.Test_decode_chip_byte_stream_to_pixel_array()
+    report["functions"]["TransposeWords16x16"] = timing_tests.Test_TransposeWords16x16()
+    report["functions"]["TransposeWords8x8"] = timing_tests.Test_TransposeByte8x8()
+    report["functions"]["decode_chip_byte_stream_to_pixel_array"] = timing_tests.Test_decode_chip_byte_stream_to_pixel_array()
+
+    report["functions"]["Deinterleve_16Bytes_to_2x8Bytes"] = timing_tests.Test_Deinterleve_16Bytes_to_2x8Bytes_bytestream()
+    report["functions"]["TransposeBits_16xI8_to_8xI16"] = timing_tests.Test_TransposeBits_16xI8_to_8xI16_bytestream()
+    report["functions"]["Deinterleve_14x8Words_to_8x14Word"] = timing_tests.Test_Deinterleve_14x8Words_to_8x14Words_bytestream()
+    report["functions"]["TransposeBits_14xI16_to_16xI16"] = timing_tests.Test_TransposeBits_14xI16_to_16xI16_bytestream()
+
     report["description"] =  "" # insert here additional description of test if required
 
     save_report_as_json(f"Results/test_run_{now}", report)
