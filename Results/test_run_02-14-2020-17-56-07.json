@@ -12,9 +12,10 @@
         },
         "decode_chip_byte_stream_to_pixel_array": {
             "avg_time": 23.207336935000058,
-            "buffer_size": "114.688 MB",
+            "buffer_size": "109.38 MB",
             "repeats": 1
         }
     },
-    "cpu": "ARMv7 Processor rev 3 (v7l)"
+    "cpu": "ARMv7 Processor rev 3 (v7l)",
+    "compiler": "gcc Raspbian 8.3"
 }

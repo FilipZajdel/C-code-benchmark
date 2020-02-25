@@ -12,9 +12,10 @@
         },
         "decode_chip_byte_stream_to_pixel_array": {
             "avg_time": 82.908,
-            "buffer_size": "1.146 GB",
+            "buffer_size": "1.07 GB",
             "repeats": 1
         }
     },
-    "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz"
+    "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",
+    "compiler": "gcc 7.4"
 }
