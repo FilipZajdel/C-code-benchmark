@@ -119,10 +119,6 @@ def cpu_to_device(cpu):
 
 
 
-
-
-
-
 with tag("head"):
     doc.stag("link", rel="icon", href="static/img/logo.ico")
     doc.stag("meta", charset="UTF-8")
@@ -138,54 +134,74 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
     functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
 
     with tag("div", style="margin: auto; width: 75%; color: rgb(25, 20, 20)"):
-        with tag("h", style="font-size: 180%;"):
-            text("About Tests")
-        with tag("p", style="font-size:120%;"):
+        with tag("div", style="font-size: 180%; text-align: center;"):
+            text("-- About Tests --")
+        with tag("div", style="font-size:120%; background-color: rgba(220, 220, 220, 0.3); border-radius: 10px"):
             text("The goal was to measure execution time of some pieces of C code across different devices,\
-                operating systems and compilers.")
+                    operating systems and compilers.")
         doc.stag("br")  
 
-        with tag("h", style="font-size: 180%;"):
-            text("Device Configuration")
-        with tag("p", style="font-size:120%"):
+        with tag("div", style="font-size: 180%; text-align: center;"):
+            text("-- Device Configuration --")
+        with tag("div", style="font-size:120%; background-color: rgba(220, 220, 220, 0.3); border-radius: 10px"):
             text("Tests were executed on Raspberry Pi 4 (RPi) with Linux installed and one PC with both\
                 Linux and Windows installed.")
-        doc.stag("br")
-        doc.stag("hr")
+
         doc.stag("br")
 
-        with tag("h", style="font-size: 180%;"):
-            text("Results")
+        with tag("div", style="font-size: 180%; text-align: center;"):
+            text("-- Results --")
         doc.stag("br"); doc.stag("br")
 
         for func_name, func_info_list in functions.items():
-            with tag("h", style="font-size:150%;"):
-                text(func_name)
+            with tag("div", style="font-size:180%; font-weight: bold; text-align: center"):
+                text(f"{func_name}()")
+            
+            has_multiple_columns = len(func_info_list) > 1 
 
-            for func_info in func_info_list:
-                with tag("table", style="width: 100%"):
-                    with tag("tr", style="font-size: 120%"):
-                        for header in headers[:len(headers)-1]:
-                            with tag("th"):
-                                text(header)
-                        with tag("th", style="background-color: lightgrey"):
-                            text(headers[-1])
+            for idx, func_info in enumerate(func_info_list):
 
-                    doc.stag("br")
-                    print(func_info.get("buffer_size"))
-                    func_data_list = func_info.get("data")
+                column_number = idx%2
+                div_float = ""
+                div_margin = ""
+                if has_multiple_columns:
+                    div_float = "float: left;"
+                
+                if column_number == 1:
+                    div_margin = "margin-left: 2%;"
 
-                    for func_data in func_data_list:
-                        with tag("tr"):
-                            with tag("td", style="text-align:center"):
-                                text(cpu_to_device(func_data.get("cpu")))
-                            with tag("td", style="text-align:center"):
-                                text(func_data.get("os"))
-                            with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
-                                text(func_data.get("avg_time"))                 
-                        
+                with tag("div", style=f"text-align: center; width: 48%; font-size: 150%; {div_float} {div_margin} background-color: rgba(220, 220, 220, 0.3); border-radius: 10px"):
+                    vector_size = func_info.get("buffer_size")
+                    text(f"Test vector size: {vector_size}")
+
+                    with tag("table", style="width: 100%; margin: auto"):
+                        with tag("tr", style="font-size: 120%"):
+                            for header in headers[:len(headers)-1]:
+                                with tag("th"):
+                                    text(header)
+                            with tag("th", style="background-color: lightgrey"):
+                                text(headers[-1])
+
+                        for func_data in func_info.get("data"):
+                            with tag("tr"):
+                                with tag("td", style="text-align:center"):
+                                    text(cpu_to_device(func_data.get("cpu")))
+                                with tag("td", style="text-align:center"):
+                                    text(func_data.get("os"))
+                                with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
+                                    text(func_data.get("avg_time"))        
+
+                    doc.stag("br")         
+
+                if idx == 1:
+                    with tag("div", style="clear:both"):
+                        doc.stag("br")
+
+
+            with tag("div", style="clear:both"):
                 doc.stag("br")
-                doc.stag("br")
+                doc.stag("br")            
+
 
 with open("docs/index.html", "w") as html_file:
     html_file.write(doc.getvalue())

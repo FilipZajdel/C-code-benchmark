@@ -16,11 +16,6 @@
             "avg_time": 7.058607310000298,
             "repeats": 1,
             "buffer_size": "1.07 GB"
-        },
-        "TransposeBits_14xI16_to_16xI16": {
-            "avg_time": 122.90904800099997,
-            "repeats": 1,
-            "buffer_size": "1.07 GB"
         }
     },
     "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",

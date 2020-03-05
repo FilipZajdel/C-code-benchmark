@@ -1,0 +1,34 @@
+{
+    "datetime": "03-05-2020-23-17-14",
+    "platform": "linux",
+    "functions": {
+        "decode_chip_byte_stream_to_pixel_array": {
+            "avg_time": 40.58455867700104,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        },
+        "Deinterleve_16Bytes_to_2x8Bytes": {
+            "avg_time": 2.0490516489990114,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        },
+        "TransposeBits_16xI8_to_8xI16": {
+            "avg_time": 5.9110635639990505,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        },
+        "Deinterleve_14x8Words_to_8x14Word": {
+            "avg_time": 1.7546206730003178,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        },
+        "TransposeBits_14xI16_to_16xI16": {
+            "avg_time": 30.611742434000917,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        }
+    },
+    "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",
+    "description": "",
+    "compiler": "gcc 7.4"
+}

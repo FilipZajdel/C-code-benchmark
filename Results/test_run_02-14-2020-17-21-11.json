@@ -2,14 +2,6 @@
     "datetime": "02-14-2020-17-21-09",
     "platform": "win32",
     "functions": {
-        "TransposeWords16x16": {
-            "avg_time": 1.8570700000026364e-06,
-            "repeats": 10000
-        },
-        "TransposeWords8x8": {
-            "avg_time": 1.793039999998758e-06,
-            "repeats": 10000
-        },
         "decode_chip_byte_stream_to_pixel_array": {
             "avg_time": 1.7496947999999968,
             "buffer_size": "109.38 MB",
