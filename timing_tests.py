@@ -125,7 +125,7 @@ def Test_Deinterleve_14x8Words_to_8x14Words_bytestream(bytestream_size=114688000
 
     return performanceTester.get_report()
 
-def Test_TransposeBits_14xI16_to_16xI16_bytestream(bytestream_size=1146880000):
+def Test_TransposeBits_14xI16_to_16xI16_bytestream(bytestream_size=573440000):
 
     chunks_nr = (bytestream_size//2)//14
     data_in = np.ctypeslib.as_ctypes(np.random.randint(low=0, high=2**16-1, \
