@@ -1,1 +1,24 @@
-{"datetime": "02-26-2020-01-37-33", "platform": "linux", "functions": {"TransposeWords16x16": {"avg_time": 5.929643600347845e-06, "repeats": 10000}, "TransposeWords8x8": {"avg_time": 4.636370800699296e-06, "repeats": 10000}, "decode_chip_byte_stream_to_pixel_array": {"avg_time": 228.8545461230001, "repeats": 1, "buffer_size": "1.07 GB"}, "Deinterleve_16Bytes_to_2x8Bytes": {"avg_time": 15.566374806000113, "repeats": 1, "buffer_size": "1.07 GB"}, "TransposeBits_16xI8_to_8xI16": {"avg_time": 50.77144224699987, "repeats": 1, "buffer_size": "1.07 GB"}, "Deinterleve_14x8Words_to_8x14Word": {"avg_time": 14.13892826900019, "repeats": 1, "buffer_size": "1.07 GB"}, "TransposeBits_14xI16_to_16xI16": {"avg_time": 72.59048640100036, "repeats": 1, "buffer_size": "546.88 MB"}}, "cpu": "ARMv7 Processor rev 3 (v7l)", "description": "", "compiler": "gcc 8.3"}
+{
+    "datetime": "02-26-2020-01-37-33",
+    "platform": "linux",
+    "functions": {
+        "Deinterleve_16Bytes_to_2x8Bytes": {
+            "avg_time": 15.566374806000113,
+            "repeats": 1,
+            "buffer_size": "1.07 GB"
+        },
+        "TransposeBits_16xI8_to_8xI16": {
+            "avg_time": 50.77144224699987,
+            "repeats": 1,
+            "buffer_size": "1.07 GB"
+        },
+        "Deinterleve_14x8Words_to_8x14Word": {
+            "avg_time": 14.13892826900019,
+            "repeats": 1,
+            "buffer_size": "1.07 GB"
+        }
+    },
+    "cpu": "ARMv7 Processor rev 3 (v7l)",
+    "description": "",
+    "compiler": "gcc 8.3"
+}

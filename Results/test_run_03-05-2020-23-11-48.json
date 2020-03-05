@@ -1,1 +1,34 @@
-{"datetime": "03-05-2020-23-11-48", "platform": "linux", "functions": {"decode_chip_byte_stream_to_pixel_array": {"avg_time": 112.03804133700004, "repeats": 1, "buffer_size": "546.88 MB"}, "Deinterleve_16Bytes_to_2x8Bytes": {"avg_time": 6.574397425000029, "repeats": 1, "buffer_size": "546.88 MB"}, "TransposeBits_16xI8_to_8xI16": {"avg_time": 25.38790405599991, "repeats": 1, "buffer_size": "546.88 MB"}, "Deinterleve_14x8Words_to_8x14Word": {"avg_time": 7.068016655999941, "repeats": 1, "buffer_size": "546.88 MB"}, "TransposeBits_14xI16_to_16xI16": {"avg_time": 72.54439843800003, "repeats": 1, "buffer_size": "546.88 MB"}}, "cpu": "ARMv7 Processor rev 3 (v7l)", "description": "", "compiler": "gcc 8.3"}
+{
+    "datetime": "03-05-2020-23-11-48",
+    "platform": "linux",
+    "functions": {
+        "decode_chip_byte_stream_to_pixel_array": {
+            "avg_time": 112.03804133700004,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        },
+        "Deinterleve_16Bytes_to_2x8Bytes": {
+            "avg_time": 6.574397425000029,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        },
+        "TransposeBits_16xI8_to_8xI16": {
+            "avg_time": 25.38790405599991,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        },
+        "Deinterleve_14x8Words_to_8x14Word": {
+            "avg_time": 7.068016655999941,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        },
+        "TransposeBits_14xI16_to_16xI16": {
+            "avg_time": 72.54439843800003,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        }
+    },
+    "cpu": "ARMv7 Processor rev 3 (v7l)",
+    "description": "",
+    "compiler": "gcc 8.3"
+}
