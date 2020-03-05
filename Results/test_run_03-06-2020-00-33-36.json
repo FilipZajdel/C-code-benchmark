@@ -1,0 +1,29 @@
+{
+    "datetime": "03-06-2020-00-33-34",
+    "platform": "win32",
+    "functions": {
+        "Deinterleve_16Bytes_to_2x8Bytes": {
+            "avg_time": 1.190845000000003,
+            "repeats": 1,
+            "buffer_size": "1.07 GB"
+        },
+        "TransposeBits_16xI8_to_8xI16": {
+            "avg_time": 4.444569899999998,
+            "repeats": 1,
+            "buffer_size": "1.07 GB"
+        },
+        "Deinterleve_14x8Words_to_8x14Word": {
+            "avg_time": 0.3306098999999989,
+            "repeats": 1,
+            "buffer_size": "1.07 GB"
+        },
+        "TransposeBits_14xI16_to_16xI16": {
+            "avg_time": 5.598868699999997,
+            "repeats": 1,
+            "buffer_size": "546.88 MB"
+        }
+    },
+    "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",
+    "description": "",
+    "compiler": "MSVC"
+}

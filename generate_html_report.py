@@ -64,7 +64,7 @@ class ReportReader:
             if function in report.get("functions", ""):
                 if report["functions"].get(function).get("buffer_size", -1) == buffer_size:
                     time_elapsed = report["functions"].get(function).get("avg_time")
-                    time_elapsed = expsec_to_sec_suffix(time_elapsed)
+                    time_elapsed = expsec_to_sec_suffix(time_elapsed, 1)
                     data.append({
                         "cpu" : report.get("cpu", ""), 
                         "os" : report.get("platform", ""), 

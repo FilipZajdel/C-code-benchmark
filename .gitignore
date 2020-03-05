@@ -3,3 +3,5 @@
 x64
 bin
 __pycache__
+decoder.py~
+run_tests.py~

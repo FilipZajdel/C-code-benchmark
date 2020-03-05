@@ -1,14 +1,14 @@
 {
-    "datetime": "03-05-2020-23-40-30",
-    "platform": "linux",
+    "datetime": "03-06-2020-00-40-32",
+    "platform": "win32",
     "functions": {
         "TransposeBits_14xI16_to_16xI16": {
-            "avg_time": 63.68385673299781,
+            "avg_time": 2.2396100000000003,
             "repeats": 1,
-            "buffer_size": "1.07 GB"
+            "buffer_size": "218.75 MB"
         }
     },
     "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",
     "description": "",
-    "compiler": "gcc 7.4"
+    "compiler": "MSVC"
 }
