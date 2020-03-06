@@ -34,12 +34,14 @@ class ReportReader:
         for report in self.reports.values():
             for func_name, data in report.get("functions").items():
 
-                function_body = function_defs.get(func_name, "")
+                function_body = function_defs.get(func_name, {}).get("body", "")
+                function_details = function_defs.get(func_name, {}).get("details", "")
                 buffer_size = data.get("buffer_size")
-                function_data = self.__get_function_data(func_name, buffer_size, group_by="cpu")
+                function_data = self.__get_function_data(func_name, buffer_size, group_sort_by="cpu")
                 function_entry = {"body"        : function_body, \
                                   "buffer_size" : buffer_size,   \
-                                  "data"        : function_data}
+                                  "data"        : function_data, \
+                                  "details"     : function_details}
 
                 func_info_exists = False
                 for func_data in functions.get(func_name, []):
@@ -55,7 +57,7 @@ class ReportReader:
 
         return functions  
 
-    def __get_function_data(self, function, buffer_size, group_by=None):
+    def __get_function_data(self, function, buffer_size, group_sort_by=None):
         """ Returns list of tuples in format: [(CPU, OS, Num of repeats, Buffer size, Executed Time)] """
         data = []
         group_keys = ["cpu", "os", "compiler", "repeats", "buffer_size", "avg_time"]
@@ -73,19 +75,21 @@ class ReportReader:
                         "avg_time" : time_elapsed
                     })
         
-        if group_by in group_keys:
+        if group_sort_by in group_keys:
             groups = []
 
             for d in data:
-                value = d[group_by]
+                value = d[group_sort_by]
 
                 if value not in groups:
                     groups.append(value)
+            
+            groups=sorted(groups)
             new_data = []
 
             for group in groups:
                 for d in data:
-                    if d[group_by] == group:
+                    if d[group_sort_by] == group:
                         new_data.append(d)
 
             data = new_data
@@ -94,19 +98,6 @@ class ReportReader:
 
     def get_functions(self):
         return self.__functions
-
-
-def expsec_to_sec_suffix(val, precision=3):
-    if val > 1:
-        return f"{round(val, precision)}s"
-    elif val > 10**(-3):
-        return f"{round(val/(10**(-3)), precision)}ms"
-    elif val > 10**(-6):
-        return f"{round(val/(10**(-6)), precision)}µs"
-    elif val > 10**(-9):
-        return f"{round(val/(10**(-9)), precision)}ns"
-    else:
-        return f"{val}"
 
 def cpu_to_device(cpu):
     if "intel" in cpu.lower() or "amd" in cpu.lower():
@@ -130,7 +121,7 @@ with tag("head"):
     doc.stag("link", rel="icon", href="static/img/logo.ico")
     doc.stag("meta", charset="UTF-8")
     doc.asis(
-        "<style>table,th,td{border:2px solid gray; border-collapse: collapse}</style>")
+        "<style>table, th, td{border:1px solid gray; border-collapse: collapse;}</style>")
 
     with tag("title"):
         text("Byte Transpose Performance Tests")
@@ -140,33 +131,48 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
     headers = ("Device", "OS", "Execution time [s]")
     functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
 
-    with tag("div", style="margin: auto; width: 75%; color: rgb(25, 20, 20)"):
+    with tag("div", style="margin: auto; width: 65%; color: rgb(25, 20, 20)"):
         with tag("div", style="font-size: 180%; text-align: center;"):
             text("-- About Tests --")
-        with tag("div", style="font-size:120%; background-color: rgba(220, 220, 220, 0.3); border-radius: 10px"):
+        with tag("div", style="padding: 1%; margin:auto; width: 60%; font-size:120%;"):
             text("The goal was to measure execution time of some pieces of C code across different devices,\
                     operating systems and compilers.")
         doc.stag("br")  
 
         with tag("div", style="font-size: 180%; text-align: center;"):
             text("-- Device Configuration --")
-        with tag("div", style="font-size:120%; background-color: rgba(220, 220, 220, 0.3); border-radius: 10px"):
+        with tag("div", style="padding: 1%; margin:auto; width: 60%; font-size:120%; "):
             text("Tests were executed on Raspberry Pi 4 (RPi) with Linux installed and one PC with both\
                 Linux and Windows installed.")
 
         doc.stag("br")
 
-        with tag("div", style="font-size: 180%; text-align: center;"):
+        with tag("div", style="margin:auto; width: 60%; font-size: 180%; text-align: center;"):
             text("-- Results --")
         doc.stag("br"); doc.stag("br")
 
         for func_name, func_info_list in functions.items():
-            with tag("div", style="font-size:180%; font-weight: bold; text-align: center"):
-                text(f"{func_name}()")
-            
-            has_multiple_columns = len(func_info_list) > 1 
+            with tag("div", style="clear: both; font-size:100%; margin: left; padding: 1%; width: 60%; border-bottom: solid 1px gray; border-left: solid 1px gray"):
+                with tag("h", style="font-size: 180%; font-weight: bold"):
+                    text(f"{func_name}()")
+                with tag("p", style="font-size: 120%"):
+                        text(func_info_list[0].get("details", ""))
 
-            for idx, func_info in enumerate(func_info_list):
+            # if len(func_info_list[0].get("details", "")) != 0:
+            # if True:
+            #     with tag("div", style="clear:both"): #Separator
+            #         doc.stag("br")
+
+            #     with tag("div", style="margin: left; padding: 1%; width: 47%; clear:both; background-color: rgba(220, 220, 220, 0.0); border-bottom: solid 1px gray; border-left: solid 1px gray"):
+            #         # with tag("div", style="font-size: 150%; text-align: center"):
+            #         #     #text("Description:")
+            #         #     # doc.stag("br")
+            #         with tag("p", style="font-size: 120%"):
+            #             text(func_info_list[0].get("details", ""))
+            
+            has_multiple_columns = len(func_info_list) > 1
+
+            for idx, func_info in enumerate(func_info_list): 
 
                 column_number = idx%2
                 div_float = ""
@@ -177,11 +183,11 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
                 if column_number == 1:
                     div_margin = "margin-left: 2%;"
 
-                with tag("div", style=f"text-align: center; width: 48%; font-size: 150%; {div_float} {div_margin} background-color: rgba(220, 220, 220, 0.3); border-radius: 10px"):
+                with tag("div", style=f"text-align: center; width: 49%; font-size: 150%; {div_float} {div_margin} border-radius: 10px"): #background-color: rgba(220, 220, 220, 0.3);
                     vector_size = func_info.get("buffer_size")
                     text(f"Test vector size: {vector_size}")
 
-                    with tag("table", style="width: 100%; margin: auto"):
+                    with tag("table", style="width: 100%; margin: auto;"):
                         with tag("tr", style="font-size: 120%"):
                             for header in headers[:len(headers)-1]:
                                 with tag("th"):
@@ -202,13 +208,11 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
 
                 if idx == 1:
                     with tag("div", style="clear:both"):
-                        doc.stag("br")
+                        doc.stag("br")      
 
-
-            with tag("div", style="clear:both"):
+            with tag("div", style="clear:both"): #Separator
                 doc.stag("br")
-                doc.stag("br")            
-
+                doc.stag("br")
 
 with open("docs/index.html", "w") as html_file:
     html_file.write(doc.getvalue())
