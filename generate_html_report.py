@@ -64,7 +64,7 @@ class ReportReader:
             if function in report.get("functions", ""):
                 if report["functions"].get(function).get("buffer_size", -1) == buffer_size:
                     time_elapsed = report["functions"].get(function).get("avg_time")
-                    time_elapsed = expsec_to_sec_suffix(time_elapsed, 1)
+                    time_elapsed = round(time_elapsed, 1) if time_elapsed > 0.1 else round(time_elapsed, 2)
                     data.append({
                         "cpu" : report.get("cpu", ""), 
                         "os" : report.get("platform", ""), 
@@ -117,7 +117,14 @@ def cpu_to_device(cpu):
     
     return "Unknown"
 
-
+def beautify_os_name(os):
+    if "linux" in os.lower():
+        return "Linux"
+    
+    if "win" in os.lower():
+        return "Windows"
+    
+    return "unknown"
 
 with tag("head"):
     doc.stag("link", rel="icon", href="static/img/logo.ico")
@@ -130,7 +137,7 @@ with tag("head"):
 
 with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: black"):
     
-    headers = ("Device", "OS", "Execution time")
+    headers = ("Device", "OS", "Execution time [s]")
     functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
 
     with tag("div", style="margin: auto; width: 75%; color: rgb(25, 20, 20)"):
@@ -187,7 +194,7 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
                                 with tag("td", style="text-align:center"):
                                     text(cpu_to_device(func_data.get("cpu")))
                                 with tag("td", style="text-align:center"):
-                                    text(func_data.get("os"))
+                                    text(beautify_os_name(func_data.get("os")))
                                 with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
                                     text(func_data.get("avg_time"))        
 

@@ -18,14 +18,14 @@ if __name__ == "__main__":
     now = current_time_as_str()
     report_dir = "Results"
 
-    report["functions"]["TransposeWords16x16"] = timing_tests.Test_TransposeWords16x16()
-    report["functions"]["TransposeWords8x8"] = timing_tests.Test_TransposeByte8x8()
-    report["functions"]["decode_chip_byte_stream_to_pixel_array"] = timing_tests.Test_decode_chip_byte_stream_to_pixel_array()
+    # report["functions"]["TransposeWords16x16"] = timing_tests.Test_TransposeWords16x16()
+    # report["functions"]["TransposeWords8x8"] = timing_tests.Test_TransposeByte8x8()
+    report["functions"]["decode_chip_byte_stream_to_pixel_array"] = timing_tests.Test_decode_chip_byte_stream_to_pixel_array(114688000*2)
 
-    report["functions"]["Deinterleve_16Bytes_to_2x8Bytes"] = timing_tests.Test_Deinterleve_16Bytes_to_2x8Bytes_bytestream()
-    report["functions"]["TransposeBits_16xI8_to_8xI16"] = timing_tests.Test_TransposeBits_16xI8_to_8xI16_bytestream()
-    report["functions"]["Deinterleve_14x8Words_to_8x14Word"] = timing_tests.Test_Deinterleve_14x8Words_to_8x14Words_bytestream()
-    report["functions"]["TransposeBits_14xI16_to_16xI16"] = timing_tests.Test_TransposeBits_14xI16_to_16xI16_bytestream()
+    report["functions"]["Deinterleve_16Bytes_to_2x8Bytes"] = timing_tests.Test_Deinterleve_16Bytes_to_2x8Bytes_bytestream(114688000*2)
+    report["functions"]["TransposeBits_16xI8_to_8xI16"] = timing_tests.Test_TransposeBits_16xI8_to_8xI16_bytestream(114688000*2)
+    report["functions"]["Deinterleve_14x8Words_to_8x14Word"] = timing_tests.Test_Deinterleve_14x8Words_to_8x14Words_bytestream(114688000*2)
+    report["functions"]["TransposeBits_14xI16_to_16xI16"] = timing_tests.Test_TransposeBits_14xI16_to_16xI16_bytestream(114688000*7)
 
     report["description"] =  "" # insert here additional description of test if required
     report["compiler"] = "gcc 7.4" # insert here used compiler
