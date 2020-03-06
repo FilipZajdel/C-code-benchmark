@@ -132,14 +132,14 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
     functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
 
     with tag("div", style="margin: auto; width: 65%; color: rgb(25, 20, 20)"):
-        with tag("div", style="font-size: 180%; text-align: center;"):
+        with tag("div", style="font-size: 180%; text-align: center; font-weight: bold"):
             text("-- About Tests --")
         with tag("div", style="padding: 1%; margin:auto; width: 60%; font-size:120%;"):
             text("The goal was to measure execution time of some pieces of C code across different devices,\
                     operating systems and compilers.")
         doc.stag("br")  
 
-        with tag("div", style="font-size: 180%; text-align: center;"):
+        with tag("div", style="font-size: 180%; text-align: center; font-weight: bold"):
             text("-- Device Configuration --")
         with tag("div", style="padding: 1%; margin:auto; width: 60%; font-size:120%; "):
             text("Tests were executed on Raspberry Pi 4 (RPi) with Linux installed and one PC with both\
@@ -147,28 +147,16 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
 
         doc.stag("br")
 
-        with tag("div", style="margin:auto; width: 60%; font-size: 180%; text-align: center;"):
+        with tag("div", style="margin:auto; width: 60%; font-size: 180%; text-align: center; font-weight: bold"):
             text("-- Results --")
         doc.stag("br"); doc.stag("br")
 
         for func_name, func_info_list in functions.items():
             with tag("div", style="clear: both; font-size:100%; margin: left; padding: 1%; width: 60%; border-bottom: solid 1px gray; border-left: solid 1px gray"):
-                with tag("h", style="font-size: 180%; font-weight: bold"):
+                with tag("h", style="font-size: 180%;"):
                     text(f"{func_name}()")
                 with tag("p", style="font-size: 120%"):
                         text(func_info_list[0].get("details", ""))
-
-            # if len(func_info_list[0].get("details", "")) != 0:
-            # if True:
-            #     with tag("div", style="clear:both"): #Separator
-            #         doc.stag("br")
-
-            #     with tag("div", style="margin: left; padding: 1%; width: 47%; clear:both; background-color: rgba(220, 220, 220, 0.0); border-bottom: solid 1px gray; border-left: solid 1px gray"):
-            #         # with tag("div", style="font-size: 150%; text-align: center"):
-            #         #     #text("Description:")
-            #         #     # doc.stag("br")
-            #         with tag("p", style="font-size: 120%"):
-            #             text(func_info_list[0].get("details", ""))
             
             has_multiple_columns = len(func_info_list) > 1
 
