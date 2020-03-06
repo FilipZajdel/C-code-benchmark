@@ -28,7 +28,7 @@
         ],
         "details": ""
     },
-    "Deinterleve_14x8Words_to_8x14Words": {
+    "Deinterleve_14x8Words_to_8x14Word": {
         "body": [
             "void WINAPI Deinterleve_14x8Words_to_8x14Words(WORD *pwSource, DWORD count)",
             "{",

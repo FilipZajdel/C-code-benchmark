@@ -120,8 +120,33 @@ def beautify_os_name(os):
 with tag("head"):
     doc.stag("link", rel="icon", href="static/img/logo.ico")
     doc.stag("meta", charset="UTF-8")
-    doc.asis(
-        "<style>table, th, td{border:1px solid gray; border-collapse: collapse;}</style>")
+    with tag("style"):
+        text("  table, th, td{border:1px solid gray; border-collapse: collapse;} \
+                .tooltip {\
+                  position: relative;\
+                  display: block;\
+                }\
+                .tooltip .tooltiptext {\
+                  visibility: hidden;\
+                  background-color: rgba(100, 100, 100, 0.95);\
+                  color: black;\
+                  font-weight: normal;\
+                  text-align: left;\
+                  white-space: pre;\
+                  border-radius: 6px;\
+                  padding: 3px;\
+                  border: 2px solid black;\
+                  \
+                  /* Position the tooltip */\
+                  position: absolute;\
+                  z-index: 1;\
+                  top: 102%;\
+                  left: 50%;\
+                  margin-top: -1px;\
+                }\
+                .tooltip:hover .tooltiptext {\
+                  visibility: visible; \
+                }")
 
     with tag("title"):
         text("Byte Transpose Performance Tests")
@@ -152,11 +177,19 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
         doc.stag("br"); doc.stag("br")
 
         for func_name, func_info_list in functions.items():
-            with tag("div", style="clear: both; font-size:100%; margin: left; padding: 1%; width: 60%; border-bottom: solid 1px gray; border-left: solid 1px gray"):
-                with tag("h", style="font-size: 180%;"):
+
+            function_details = func_info_list[0].get("details", "")
+            function_body = "\n".join(func_info_list[0].get("body", ""))
+
+            with tag("div", style="clear: both; font-size:100%; margin: left; padding: 1%; width: 55%; border-top: solid 1px gray; border-left: solid 1px gray"):
+                with tag("span", klass="tooltip", style="font-size: 180%;"):
                     text(f"{func_name}()")
+
+                    with tag("span", klass="tooltiptext", style="font-size: 70%"):
+                        text(function_body)
+                
                 with tag("p", style="font-size: 120%"):
-                        text(func_info_list[0].get("details", ""))
+                    text(function_details)
             
             has_multiple_columns = len(func_info_list) > 1
 
@@ -169,7 +202,7 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
                     div_float = "float: left;"
                 
                 if column_number == 1:
-                    div_margin = "margin-left: 2%;"
+                    div_margin = "margin-left: 2%;" 
 
                 with tag("div", style=f"text-align: center; width: 49%; font-size: 150%; {div_float} {div_margin} border-radius: 10px"): #background-color: rgba(220, 220, 220, 0.3);
                     vector_size = func_info.get("buffer_size")
@@ -190,15 +223,10 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
                                 with tag("td", style="text-align:center"):
                                     text(beautify_os_name(func_data.get("os")))
                                 with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
-                                    text(func_data.get("avg_time"))        
-
-                    doc.stag("br")         
-
-                if idx == 1:
-                    with tag("div", style="clear:both"):
-                        doc.stag("br")      
+                                    text(func_data.get("avg_time"))                
 
             with tag("div", style="clear:both"): #Separator
+                doc.stag("br")
                 doc.stag("br")
                 doc.stag("br")
 
