@@ -96,7 +96,7 @@ class ReportReader:
 
         return data
 
-    def get_functions(self):
+    def get_functions(self, sort_by="buffer_size"): 
         return self.__functions
 
 def cpu_to_device(cpu):
@@ -121,16 +121,34 @@ with tag("head"):
     doc.stag("link", rel="icon", href="static/img/logo.ico")
     doc.stag("meta", charset="UTF-8")
     with tag("style"):
-        text("  table, th, td{border:1px solid gray; border-collapse: collapse;} \
+        text("table, th, td{ \
+                border:1px solid gray; \
+                border-collapse: collapse;\
+                } \
+                .chapter { \
+                  font-size: 180%; \
+                  text-align: center; \
+                  font-weight: bold; \
+                } \
+                \
+                .description {\
+                  padding: 1%; \
+                  margin:auto; \
+                  width: 60%; \
+                  font-size:120%;\
+                }\
                 .tooltip {\
                   position: relative;\
-                  display: block;\
+                  display: block; \
+                  font-size: 180%; \
+                  text-align: center; \
                 }\
                 .tooltip .tooltiptext {\
                   visibility: hidden;\
-                  background-color: rgba(100, 100, 100, 0.95);\
+                  background-color: rgba(255, 255, 255, 0.9);\
                   color: black;\
                   font-weight: normal;\
+                  font-size: 70%;\
                   text-align: left;\
                   white-space: pre;\
                   border-radius: 6px;\
@@ -141,7 +159,7 @@ with tag("head"):
                   position: absolute;\
                   z-index: 1;\
                   top: 102%;\
-                  left: 50%;\
+                  left: 0%;\
                   margin-top: -1px;\
                 }\
                 .tooltip:hover .tooltiptext {\
@@ -157,22 +175,22 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
     functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
 
     with tag("div", style="margin: auto; width: 65%; color: rgb(25, 20, 20)"):
-        with tag("div", style="font-size: 180%; text-align: center; font-weight: bold"):
+        with tag("div", klass="chapter"):
             text("-- About Tests --")
-        with tag("div", style="padding: 1%; margin:auto; width: 60%; font-size:120%;"):
+        with tag("div", klass="description"):
             text("The goal was to measure execution time of some pieces of C code across different devices,\
                     operating systems and compilers.")
         doc.stag("br")  
 
-        with tag("div", style="font-size: 180%; text-align: center; font-weight: bold"):
+        with tag("div", klass="chapter"):
             text("-- Device Configuration --")
-        with tag("div", style="padding: 1%; margin:auto; width: 60%; font-size:120%; "):
+        with tag("div", klass="description"):
             text("Tests were executed on Raspberry Pi 4 (RPi) with Linux installed and one PC with both\
                 Linux and Windows installed.")
 
         doc.stag("br")
 
-        with tag("div", style="margin:auto; width: 60%; font-size: 180%; text-align: center; font-weight: bold"):
+        with tag("div", klass="chapter"):
             text("-- Results --")
         doc.stag("br"); doc.stag("br")
 
@@ -181,14 +199,14 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
             function_details = func_info_list[0].get("details", "")
             function_body = "\n".join(func_info_list[0].get("body", ""))
 
-            with tag("div", style="clear: both; font-size:100%; margin: left; padding: 1%; width: 55%; border-top: solid 1px gray; border-left: solid 1px gray"):
-                with tag("span", klass="tooltip", style="font-size: 180%;"):
+            with tag("div", style="margin: auto; clear: both; font-size:100%; margin: left; width: 60%; border-top: solid 1px gray; /*border-left: solid 1px gray*/"):
+                with tag("span", klass="tooltip"):
                     text(f"{func_name}()")
 
-                    with tag("span", klass="tooltiptext", style="font-size: 70%"):
+                    with tag("span", klass="tooltiptext"):
                         text(function_body)
                 
-                with tag("p", style="font-size: 120%"):
+                with tag("p", style="font-size: 120%; text-align: justify"):
                     text(function_details)
             
             has_multiple_columns = len(func_info_list) > 1
