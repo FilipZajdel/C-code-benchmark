@@ -134,7 +134,7 @@ with tag("head"):
                 .description {\
                   padding: 1%; \
                   margin:auto; \
-                  width: 60%; \
+                  width: 70%; \
                   font-size:120%;\
                 }\
                 .tooltip {\
@@ -169,12 +169,37 @@ with tag("head"):
     with tag("title"):
         text("Byte Transpose Performance Tests")
 
-with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: black"):
+with tag("body", style="background-color: rgba(220, 220, 220, 0.6); margin:0; padding:0"):
     
     headers = ("Device", "OS", "Execution time [s]")
     functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
 
-    with tag("div", style="margin: auto; width: 65%; color: rgb(25, 20, 20)"):
+    with tag("div", style="background: url(\"static/img/prism.png\") fixed; margin: auto; width: 70%; color: rgb(25, 20, 20); padding-left: 2%; padding-right: 2%; padding-top: 2%"):
+        with tag("header", style="background-color: rgba(220, 220, 220, 0.6);"):
+            doc.stag("br")
+            with tag("p", style="text-align: center; font-size: 250%; font-weight: bold;"):
+                text("Performance tests of C functions")
+            
+            with tag("p", style="text-align: center; font-size: 120%;"):
+                text("Project implemented in cooperation with Mirosław Żołądź phD at the AGH University of Science and Technology")
+
+            doc.stag("br")
+            with tag("div", style="margin: auto"):
+                with tag("table", style="margin: auto; border: 0px"): 
+                    doc.stag("col", width="250")
+                    doc.stag("col", width="250")
+                    with tag("tr", style="border: 0px"):
+                        with tag("th", style="border: 0px"):
+                            text("Sources: ")
+                            with tag("a", href="https://github.com/FilipZajdel/ByteTranspose", style="text-decoration:none"):
+                                text("Github")
+                        with tag("th", style="border: 0px"):
+                            text("Author: Filip Zajdel")
+                        with tag("th", style="border: 0px"):
+                            text("Contact: filipzajdel@student.agh.edu.pl")
+        
+        doc.stag("br")
+        doc.stag("br")
         with tag("div", klass="chapter"):
             text("-- About Tests --")
         with tag("div", klass="description"):
@@ -199,7 +224,7 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
             function_details = func_info_list[0].get("details", "")
             function_body = "\n".join(func_info_list[0].get("body", ""))
 
-            with tag("div", style="margin: auto; clear: both; font-size:100%; margin: left; width: 60%; border-top: solid 1px gray; /*border-left: solid 1px gray*/"):
+            with tag("div", style="margin: auto; clear: both; font-size:100%; margin: left; width: 70%; border-top: solid 1px gray; /*border-left: solid 1px gray*/"):
                 with tag("span", klass="tooltip"):
                     text(f"{func_name}()")
 
