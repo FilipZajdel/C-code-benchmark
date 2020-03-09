@@ -175,14 +175,14 @@ with tag("body", style="background-image: url(\"static/img/prism.png\"); margin:
     functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
 
     with tag("header", style="/*background-color: rgba(0, 0, 0, 0.5);*/background: linear-gradient(180deg, rgba(2,0,36,0.5) 0%, rgba(168,168,168,0.5) 0%, rgba(255,255,255,0.5) 100%); color: black"):
-
+        doc.stag("br")
         with tag("p", style="text-align: center; font-size: 250%; font-weight: bold;"):
             text("Performance tests of C functions")
         
         with tag("p", style="text-align: center; font-size: 120%;"):
             text("Project implemented in cooperation with Mirosław Żołądź phD at the AGH University of Science and Technology")
 
-        with tag("div", style="margin: auto"):
+        with tag("div", style="margin: auto;"):
             with tag("table", style="margin: auto; border: 0px; font-size: 100%; font-weight: normal"): 
                 doc.stag("col", width="250")
                 doc.stag("col", width="250")
@@ -197,9 +197,8 @@ with tag("body", style="background-image: url(\"static/img/prism.png\"); margin:
                         text("Contact: filipzajdel@student.agh.edu.pl")
         doc.stag("br")
 
-    with tag("div", style="background: url(\"static/img/prism.png\") fixed; margin: auto; width: 70%; color: rgb(25, 20, 20); padding-left: 2%; padding-right: 2%; padding-top: 2%"):
+    with tag("div", style="background: url(\"static/img/prism.png\") fixed; margin: auto; width: 70%; color: rgb(25, 20, 20); padding-left: 2%; padding-right: 2%; padding-top: 2%;"):
 
-        
         doc.stag("br")
         doc.stag("br")
         with tag("div", klass="chapter"):
