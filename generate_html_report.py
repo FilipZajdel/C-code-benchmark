@@ -169,7 +169,7 @@ with tag("head"):
     with tag("title"):
         text("Byte Transpose Performance Tests")
 
-with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: black"):
+with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: black; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;"):
     
     headers = ("Device", "OS", "Execution time [s]")
     functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
