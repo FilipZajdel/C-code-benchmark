@@ -184,13 +184,13 @@ with tag("head"):
     with tag("title"):
         text("Byte Transpose Performance Tests")
 
-with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: black; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;"):
+with tag("body", style="margin: 0; background: url(\"static/img/prism.png\") fixed; color: black; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;"):
     
     reportReader = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE)
     headers = ("Device", "OS", "Execution time [s]")
     functions = reportReader.get_functions()
 
-    with tag("header", style="/*background-color: rgba(0, 0, 0, 0.5);*/background: linear-gradient(180deg, rgba(2,0,36,0.5) 0%, rgba(168,168,168,0.5) 0%, rgba(255,255,255,0.5) 100%); color: black"):
+    with tag("header", style="background: linear-gradient(180deg, rgba(2,0,36,0.5) 0%, rgba(168,168,168,0.5) 0%, rgba(255,255,255,0.5) 100%); color: black"):
         doc.stag("br")
         with tag("p", style="text-align: center; font-size: 250%; font-weight: bold;"):
             text("Performance tests of C functions")
@@ -213,7 +213,7 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
                         text("Contact: filipzajdel@student.agh.edu.pl")
         doc.stag("br")
 
-    with tag("div", style="background: url(\"static/img/prism.png\") fixed; margin: auto; width: 70%; color: rgb(25, 20, 20); padding-left: 2%; padding-right: 2%; padding-top: 2%;"):
+    with tag("div", style="margin: auto; width: 70%; color: rgb(25, 20, 20); padding-left: 2%; padding-right: 2%; padding-top: 2%;"):
 
         doc.stag("br")
         doc.stag("br")
@@ -254,7 +254,6 @@ with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: 
                 with tag("table", style="width: 100%; margin: auto; text-align: center"):
                     # Headers
                     with tag("tr"):
-                        
                         with tag("td", rowspan="2"):
                             text("Device")
                         with tag("td", rowspan="2"):
