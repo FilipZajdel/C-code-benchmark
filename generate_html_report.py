@@ -133,33 +133,43 @@ with tag("head"):
     doc.stag("meta", charset="UTF-8")
     with tag("style"):
         text("  body {  \
-                  font-family: \"Courier New\", Courier, \"Lucida Sans Typewriter\" \
+                  font-family: \"Courier New\", Courier, \"Lucida Sans Typewriter\"; \
+                  margin: 0; \
+                  background: url(\"static/img/prism.png\") fixed; \
+                  color: black; \
+                  font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; \
                 } \
                 \
                 table, th, td{ \
                 border:1px solid gray; \
                 border-collapse: collapse;\
+                min-width: 70px; \
                 } \
+                a { \
+                    text-decoration: none; \
+                }\
                 .chapter { \
                   font-size: 180%; \
                   text-align: center; \
                   font-weight: bold; \
+                  margin: auto auto 2% auto; \
                 } \
                 \
                 .description {\
                   padding: 1%; \
-                  margin:auto; \
-                  width: 70%; \
+                  margin: auto auto 5% auto; \
+                  width: 60%; \
                   font-size:120%;\
+                  text-align: justify \
                 }\
                 .tooltip {\
                   position: relative;\
                   display: block; \
                   font-size: 180%; \
                   text-align: center; \
-                }\
-                .tooltip .tooltiptext {\
-                  visibility: hidden;\
+                } \
+                .tooltip .tooltiptext { \
+                  visibility: hidden; \
                   background-color: #ccffff;\
                   color: black;\
                   font-weight: normal;\
@@ -184,13 +194,13 @@ with tag("head"):
     with tag("title"):
         text("Byte Transpose Performance Tests")
 
-with tag("body", style="margin: 0; background: url(\"static/img/prism.png\") fixed; color: black; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;"):
+with tag("body"):
     
     reportReader = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE)
     headers = ("Device", "OS", "Execution time [s]")
     functions = reportReader.get_functions()
 
-    with tag("header", style="background: linear-gradient(180deg, rgba(2,0,36,0.5) 0%, rgba(168,168,168,0.5) 0%, rgba(255,255,255,0.5) 100%); color: black"):
+    with tag("header", style="background: /*rgba(168,168,168,0.5);*/linear-gradient(180deg, rgba(2,0,36,0.5) 0%, rgba(168,168,168,0.5) 0%, rgba(255,255,255,0.5) 100%); color: black"):
         doc.stag("br")
         with tag("p", style="text-align: center; font-size: 250%; font-weight: bold;"):
             text("Performance tests of C functions")
@@ -205,7 +215,7 @@ with tag("body", style="margin: 0; background: url(\"static/img/prism.png\") fix
                 with tag("tr", style="border: 0px"):
                     with tag("th", style="border: 0px"):
                         text("Sources: ")
-                        with tag("a", href="https://github.com/FilipZajdel/ByteTranspose", style="text-decoration:none"):
+                        with tag("a", href="https://github.com/FilipZajdel/ByteTranspose", target="_blank"):
                             text("Github")
                     with tag("th", style="border: 0px"):
                         text("Author: Filip Zajdel")
@@ -214,27 +224,66 @@ with tag("body", style="margin: 0; background: url(\"static/img/prism.png\") fix
         doc.stag("br")
 
     with tag("div", style="margin: auto; width: 70%; color: rgb(25, 20, 20); padding-left: 2%; padding-right: 2%; padding-top: 2%;"):
-
-        doc.stag("br")
-        doc.stag("br")
         with tag("div", klass="chapter"):
-            text("-- About Tests --")
+            text("About")
         with tag("div", klass="description"):
-            text("The goal was to measure execution time of some pieces of C code across different devices,\
+            text("The goal of the project was to measure and compare the execution time of some pieces of C code across different devices,\
                     operating systems and compilers.")
-        doc.stag("br")  
+            doc.stag("br")
+            text("Repository structure and project files purpose is described in project's ")
+            with tag("a", href="https://github.com/FilipZajdel/ByteTranspose", target="_blank"):
+                text("README")
+            text(", which can be found on ")
+            with tag("a", href="https://github.com/FilipZajdel/ByteTranspose", target="_blank"):
+                text("github")
 
         with tag("div", klass="chapter"):
-            text("-- Device Configuration --")
+            text("Configuration of computer devices")
         with tag("div", klass="description"):
-            text("Tests were executed on Raspberry Pi 4 (RPi) with Linux installed and one PC with both\
-                Linux and Windows installed.")
+            with tag("p"):
+                text("The configuration of computer hardware used for executing tests is shown in table below. It is worth mentioning that \
+                    MSVC compiler was run with default settings, whereas gcc was set to maximum optimization (-O3) in order to improve performance.")
 
-        doc.stag("br")
+            with tag("table", style="width: 100%; margin: auto; text-align: center"):
+                with tag("tr"):
+                    with tag("th"):
+                        text("Device type")
+                    with tag("th"):
+                        text("Cpu")
+                    with tag("th"):
+                        text("Operating system")
+                    with tag("th"):
+                        text("Compiler")
+                with tag("tr"):
+                    with tag("td"):
+                        text("Raspberry Pi 4")
+                    with tag("td"):
+                        text("ARMv7")
+                    with tag("td"):
+                        text("Raspbian (kernel 4.19.57)")
+                    with tag("td"):
+                        text("Gcc 8.3")
+                with tag("tr"):
+                    with tag("td"):
+                        text("PC")
+                    with tag("td"):
+                        text("Intel Core i5-4210U")
+                    with tag("td"):
+                        text("Windows 10")
+                    with tag("td"):
+                        text("MSVC")
+                with tag("tr"):
+                    with tag("td"):
+                        text("PC")
+                    with tag("td"):
+                        text("\"")
+                    with tag("td"):
+                        text("Ubuntu 18.04 (kernel 5.3.0)")
+                    with tag("td"):
+                        text("Gcc 7.5")
 
         with tag("div", klass="chapter"):
-            text("-- Results --")
-        doc.stag("br"); doc.stag("br")
+            text("Results")
 
         for function in functions:
 
@@ -243,25 +292,25 @@ with tag("body", style="margin: 0; background: url(\"static/img/prism.png\") fix
             function_name = function["name"]
             vector_sizes = [size for size in function["vector_sizes"]]
 
-            with tag("div", style="margin: 5% auto auto auto; font-size:100%; width: 70%;"):
+            with tag("div", style="margin: auto; font-size:100%; width: 70%;"):
                 with tag("span", klass="tooltip"):
                     text(f"{function_name}()")
 
                     with tag("span", klass="tooltiptext"):
                         text(function_body)
 
-            with tag("div", style=f"margin-left: auto; margin-top: 2%; margin-right: auto; margin-bottom: 2%; text-align: center; width: 70%; font-size: 150%;"): 
+            with tag("div", style=f"margin-left: auto; margin-right: auto; text-align: center; width: 60%; font-size: 150%;"): 
                 with tag("table", style="width: 100%; margin: auto; text-align: center"):
                     # Headers
                     with tag("tr"):
-                        with tag("td", rowspan="2"):
+                        with tag("th", rowspan="2"):
                             text("Device")
-                        with tag("td", rowspan="2"):
+                        with tag("th", rowspan="2"):
                             text("OS")
-                        with tag("td", colspan=f"{len(vector_sizes)}"):
+                        with tag("th", colspan=f"{len(vector_sizes)}"):
                             text("Execution speed (MB/s)")
                             with tag("p", style="color: rgb(120, 20, 20)"):
-                                text("for vector sizes (MB)")
+                                text("vector sizes (MB)")
                  
                     with tag("tr"):
                         for size in vector_sizes:
@@ -280,9 +329,12 @@ with tag("body", style="margin: 0; background: url(\"static/img/prism.png\") fix
                                         size_MB = reportReader.convert_to_MB(size)
                                         text(int(round(size_MB/timing_info["times"].get(size,0), 0)))      
 
-            with tag("div", style="margin: auto; font-size:100%; margin: left; width: 70%;"):
-                with tag("p", style="font-size: 120%; text-align: justify"):
-                        text(function_details)                  
+                with tag("div", style="margin: auto; margin-bottom: 5%; font-size:100%; margin: left; width: 100%;"):
+                    with tag("p", style="font-size: 70%; text-align: justify"):
+                        if function_details != "":
+                            text("*)")
+                            doc.stag("br")                  
+                            text(function_details)
 
 with open("docs/index.html", "w") as html_file:
     html_file.write(doc.getvalue())
