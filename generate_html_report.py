@@ -26,75 +26,58 @@ class ReportReader:
     
     def __load_function_defs(self, def_file):
         with open(def_file, "r") as func_defs:
-            return json.load(func_defs)
+            return json.load(func_defs) 
 
     def __prepare_functions_info(self, function_defs):
-        functions = {}
+        functions = []
+        function_data_struct = {"name":None, "body":None, "details":None, "vector_sizes":[], "timings":[]}
+        timings_data_struct = {"device":None, "platform":None, "times":{}}
 
+        # Extract function names
+        func_names = sum([[f for f in report.get("functions").keys()] for report in self.reports.values()],[])
+        func_names = list(dict.fromkeys(func_names))
+
+        # Extract cpu and os pairs
+        dev_os_pairs = [(report.get("cpu"), report.get("platform")) for report in self.reports.values()]
+        dev_os_pairs = list(dict.fromkeys(dev_os_pairs))
+
+        # Extract buffer sizes of functions
+        buffer_sizes = dict.fromkeys(func_names, [])
         for report in self.reports.values():
             for func_name, data in report.get("functions").items():
+                buffer_sizes[func_name].append(data["buffer_size"])
+        buffer_sizes = {func_name:list(dict.fromkeys(sizes)) for (func_name,sizes) in buffer_sizes.items()}
 
-                function_body = function_defs.get(func_name, {}).get("body", "")
-                function_details = function_defs.get(func_name, {}).get("details", "")
-                buffer_size = data.get("buffer_size")
-                function_data = self.__get_function_data(func_name, buffer_size, group_sort_by="cpu")
-                function_entry = {"body"        : function_body, \
-                                  "buffer_size" : buffer_size,   \
-                                  "data"        : function_data, \
-                                  "details"     : function_details}
+        for func_name in func_names:
+            func_info = {**function_data_struct}
+            func_info["name"] = func_name
+            func_info["body"] = function_defs.get(func_name, {}).get("body", "")
+            func_info["details"] = function_defs.get(func_name, {}).get("details", "")
 
-                func_info_exists = False
-                for func_data in functions.get(func_name, []):
-                    if func_data.get("buffer_size") == buffer_size:
-                        func_info_exists = True
+            timing_infos = []
+            vector_sizes = []
+            for dev, os in dev_os_pairs:
+                timing_info = {}
+                timing_info["device"] = dev
+                timing_info["platform"] = os
+                timing_info["times"] = {}
 
-                if not func_info_exists:
-                    try:
-                        functions[func_name].append(function_entry)
-                    except KeyError:
-                        functions[func_name] = []
-                        functions[func_name].append(function_entry)
+                for report in self.reports.values():
+                    if dev == report["cpu"] and os == report["platform"]:
+                        if func_name in report.get("functions"):
+                            vector_size = report.get("functions")[func_name]["buffer_size"]
+                            vector_sizes.append(vector_size)
+                            avg_time = report.get("functions")[func_name]["avg_time"]
 
-        return functions  
+                            timing_info["times"][vector_size] = avg_time
 
-    def __get_function_data(self, function, buffer_size, group_sort_by=None):
-        """ Returns list of tuples in format: [(CPU, OS, Num of repeats, Buffer size, Executed Time)] """
-        data = []
-        group_keys = ["cpu", "os", "compiler", "repeats", "buffer_size", "avg_time"]
+                timing_infos.append(timing_info)
 
-        for report in self.reports.values():
-            if function in report.get("functions", ""):
-                if report["functions"].get(function).get("buffer_size", -1) == buffer_size:
-                    time_elapsed = report["functions"].get(function).get("avg_time")
-                    time_elapsed = round(time_elapsed, 1) if time_elapsed > 0.1 else round(time_elapsed, 2)
-                    data.append({
-                        "cpu" : report.get("cpu", ""), 
-                        "os" : report.get("platform", ""), 
-                        "compiler" : report.get("compiler", ""), 
-                        "repeats" : report["functions"].get(function).get("repeats", ""),  
-                        "avg_time" : time_elapsed
-                    })
-        
-        if group_sort_by in group_keys:
-            groups = []
+            func_info["vector_sizes"] = list(dict.fromkeys(vector_sizes))
+            func_info["timings"] = [t for t in timing_infos]
+            functions.append(func_info)
 
-            for d in data:
-                value = d[group_sort_by]
-
-                if value not in groups:
-                    groups.append(value)
-            
-            groups=sorted(groups)
-            new_data = []
-
-            for group in groups:
-                for d in data:
-                    if d[group_sort_by] == group:
-                        new_data.append(d)
-
-            data = new_data
-
-        return data
+        return functions
 
     def get_functions(self, sort_by="buffer_size"): 
         return self.__functions
@@ -220,59 +203,100 @@ with tag("body", style="background-image: url(\"static/img/prism.png\"); margin:
             text("-- Results --")
         doc.stag("br"); doc.stag("br")
 
-        for func_name, func_info_list in functions.items():
+        for function in functions:
 
-            function_details = func_info_list[0].get("details", "")
-            function_body = "\n".join(func_info_list[0].get("body", ""))
+            function_details = function.get("details", "")
+            function_body = "\n".join(function.get("body", ""))
+            function_name = function["name"]
+            vector_sizes = function["vector_sizes"]
 
             with tag("div", style="margin: auto; clear: both; font-size:100%; margin: left; width: 70%; border-top: solid 1px gray; /*border-left: solid 1px gray*/"):
                 with tag("span", klass="tooltip"):
-                    text(f"{func_name}()")
+                    text(f"{function_name}()")
 
                     with tag("span", klass="tooltiptext"):
                         text(function_body)
                 
                 with tag("p", style="font-size: 120%; text-align: justify"):
                     text(function_details)
-            
-            has_multiple_columns = len(func_info_list) > 1
 
-            for idx, func_info in enumerate(func_info_list): 
+            with tag("div", style=f"margin: auto; text-align: center; width: 70%; font-size: 150%; border-radius: 10px"): 
+                with tag("table", style="width: 100%; margin: auto; text-align: center"):
+                    # Headers
+                    with tag("tr"):
+                        with tag("td", rowspan="2"):
+                            text("Device")
+                        with tag("td", rowspan="2"):
+                            text("OS")
+                        with tag("td", colspan=f"{len(vector_sizes)}"):
+                            text("Execution time (MB/ms)")
+                    # Vector sizes
+                    with tag("tr"):
+                        for size in vector_sizes:
+                            with tag("td"):
+                                text(size)
+                    
+                    for timing_info in function["timings"]:
+                        with tag("tr"):
+                            with tag("td"):
+                                text(cpu_to_device(timing_info["device"]))
+                            with tag("td"):
+                                text(beautify_os_name(timing_info["platform"]))   
+                            for size in vector_sizes:        
+                                # print(timing_info["times"].get(size, 0))    
+                                if size in timing_info["times"]:                   
+                                    with tag("td"):
+                                        text(round(timing_info["times"].get(size,0), 1))                        
 
-                column_number = idx%2
-                div_float = ""
-                div_margin = ""
-                if has_multiple_columns:
-                    div_float = "float: left;"
+                    # execution_times = []
+                    # for func_info in func_info_list:
+                    #     for func_data in func_info.get("data"):
+                    #         pass
+                            # with tag("tr"):
+                            #     with tag("td", style="text-align:center"):
+                            #         text(cpu_to_device(func_data.get("cpu")))
+                            #     with tag("td", style="text-align:center"):
+                            #         text(beautify_os_name(func_data.get("os")))
+                            #     with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
+                            #         text(func_data.get("avg_time"))                
+
+
+            # for idx, func_info in enumerate(func_info_list): 
+
+            #     column_number = idx%2
+            #     div_float = ""
+            #     div_margin = ""
+            #     if has_multiple_columns:
+            #         div_float = "float: left;"
                 
-                if column_number == 1:
-                    div_margin = "margin-left: 2%;" 
+            #     if column_number == 1:
+            #         div_margin = "margin-left: 2%;" 
 
-                with tag("div", style=f"text-align: center; width: 49%; font-size: 150%; {div_float} {div_margin} border-radius: 10px"): #background-color: rgba(220, 220, 220, 0.3);
-                    vector_size = func_info.get("buffer_size")
-                    text(f"Test vector size: {vector_size}")
+            #     with tag("div", style=f"text-align: center; width: 49%; font-size: 150%; {div_float} {div_margin} border-radius: 10px"): #background-color: rgba(220, 220, 220, 0.3);
+            #         vector_size = func_info.get("buffer_size")
+            #         text(f"Test vector size: {vector_size}")
 
-                    with tag("table", style="width: 100%; margin: auto;"):
-                        with tag("tr", style="font-size: 120%"):
-                            for header in headers[:len(headers)-1]:
-                                with tag("th"):
-                                    text(header)
-                            with tag("th", style="background-color: lightgrey"):
-                                text(headers[-1])
+            #         with tag("table", style="width: 100%; margin: auto;"):
+            #             with tag("tr", style="font-size: 120%"):
+            #                 for header in headers[:len(headers)-1]:
+            #                     with tag("th"):
+            #                         text(header)
+            #                 with tag("th", style="background-color: lightgrey"):
+            #                     text(headers[-1])
 
-                        for func_data in func_info.get("data"):
-                            with tag("tr"):
-                                with tag("td", style="text-align:center"):
-                                    text(cpu_to_device(func_data.get("cpu")))
-                                with tag("td", style="text-align:center"):
-                                    text(beautify_os_name(func_data.get("os")))
-                                with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
-                                    text(func_data.get("avg_time"))                
+            #             for func_data in func_info.get("data"):
+            #                 with tag("tr"):
+            #                     with tag("td", style="text-align:center"):
+            #                         text(cpu_to_device(func_data.get("cpu")))
+            #                     with tag("td", style="text-align:center"):
+            #                         text(beautify_os_name(func_data.get("os")))
+            #                     with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
+            #                         text(func_data.get("avg_time"))                
 
-            with tag("div", style="clear:both"): #Separator
-                doc.stag("br")
-                doc.stag("br")
-                doc.stag("br")
+#             with tag("div", style="clear:both"): #Separator
+#                 doc.stag("br")
+#                 doc.stag("br")
+#                 doc.stag("br")
 
 with open("docs/index.html", "w") as html_file:
     html_file.write(doc.getvalue())
