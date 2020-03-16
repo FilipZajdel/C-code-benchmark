@@ -27,6 +27,25 @@ class ReportReader:
     def __load_function_defs(self, def_file):
         with open(def_file, "r") as func_defs:
             return json.load(func_defs) 
+    
+    def __sort_sizes(self, sizes):
+        ssize = dict.fromkeys(sizes)
+
+        for size in ssize:
+            value = size.split(" ")[0]
+            unit = size.split(" ")[1]
+
+            if "gb" in unit.lower():
+                value = float(value)*1024
+                unit = "MB"
+            else:
+                value = float(value)
+
+            ssize[size] = value
+    
+        ssize = {k: ssize[k] for k in sorted(ssize, key=ssize.get)}
+        return [k for k in ssize.keys()]
+
 
     def __prepare_functions_info(self, function_defs):
         functions = []
@@ -68,17 +87,26 @@ class ReportReader:
                             vector_size = report.get("functions")[func_name]["buffer_size"]
                             vector_sizes.append(vector_size)
                             avg_time = report.get("functions")[func_name]["avg_time"]
-
                             timing_info["times"][vector_size] = avg_time
 
                 timing_infos.append(timing_info)
 
-            func_info["vector_sizes"] = list(dict.fromkeys(vector_sizes))
+            func_info["vector_sizes"] = self.__sort_sizes(list(dict.fromkeys(vector_sizes)))
             func_info["timings"] = [t for t in timing_infos]
             functions.append(func_info)
 
         return functions
 
+    def convert_to_MB(self, buffer_size):
+
+        value = buffer_size.split(" ")[0]
+        unit = buffer_size.split(" ")[1]
+        
+        if unit.lower() == "gb":
+            value = float(value)*1024
+
+        return int(round(float(value), 0))
+    
     def get_functions(self, sort_by="buffer_size"): 
         return self.__functions
 
@@ -104,7 +132,11 @@ with tag("head"):
     doc.stag("link", rel="icon", href="static/img/logo.ico")
     doc.stag("meta", charset="UTF-8")
     with tag("style"):
-        text("table, th, td{ \
+        text("  body {  \
+                  font-family: \"Courier New\", Courier, \"Lucida Sans Typewriter\" \
+                } \
+                \
+                table, th, td{ \
                 border:1px solid gray; \
                 border-collapse: collapse;\
                 } \
@@ -128,10 +160,10 @@ with tag("head"):
                 }\
                 .tooltip .tooltiptext {\
                   visibility: hidden;\
-                  background-color: rgba(255, 255, 255, 0.9);\
+                  background-color: #ccffff;\
                   color: black;\
                   font-weight: normal;\
-                  font-size: 70%;\
+                  font-size: 50%;\
                   text-align: left;\
                   white-space: pre;\
                   border-radius: 6px;\
@@ -154,8 +186,9 @@ with tag("head"):
 
 with tag("body", style="background-image: url(\"static/img/prism.png\"); margin:0; padding:0; "):
     
+    reportReader = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE)
     headers = ("Device", "OS", "Execution time [s]")
-    functions = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE).get_functions()
+    functions = reportReader.get_functions()
 
     with tag("header", style="/*background-color: rgba(0, 0, 0, 0.5);*/background: linear-gradient(180deg, rgba(2,0,36,0.5) 0%, rgba(168,168,168,0.5) 0%, rgba(255,255,255,0.5) 100%); color: black"):
         doc.stag("br")
@@ -208,95 +241,49 @@ with tag("body", style="background-image: url(\"static/img/prism.png\"); margin:
             function_details = function.get("details", "")
             function_body = "\n".join(function.get("body", ""))
             function_name = function["name"]
-            vector_sizes = function["vector_sizes"]
+            vector_sizes = [size for size in function["vector_sizes"]]
 
-            with tag("div", style="margin: auto; clear: both; font-size:100%; margin: left; width: 70%; border-top: solid 1px gray; /*border-left: solid 1px gray*/"):
+            with tag("div", style="margin: 5% auto auto auto; font-size:100%; width: 70%;"):
                 with tag("span", klass="tooltip"):
                     text(f"{function_name}()")
 
                     with tag("span", klass="tooltiptext"):
                         text(function_body)
-                
-                with tag("p", style="font-size: 120%; text-align: justify"):
-                    text(function_details)
 
-            with tag("div", style=f"margin: auto; text-align: center; width: 70%; font-size: 150%; border-radius: 10px"): 
+            with tag("div", style=f"margin-left: auto; margin-top: 2%; margin-right: auto; margin-bottom: 2%; text-align: center; width: 70%; font-size: 150%;"): 
                 with tag("table", style="width: 100%; margin: auto; text-align: center"):
                     # Headers
                     with tag("tr"):
+                        
                         with tag("td", rowspan="2"):
                             text("Device")
                         with tag("td", rowspan="2"):
                             text("OS")
                         with tag("td", colspan=f"{len(vector_sizes)}"):
-                            text("Execution time (MB/ms)")
-                    # Vector sizes
+                            text("Execution speed (MB/s)")
+                            with tag("p", style="color: rgb(120, 20, 20)"):
+                                text("for vector sizes (MB)")
+                 
                     with tag("tr"):
                         for size in vector_sizes:
-                            with tag("td"):
-                                text(size)
-                    
+                            with tag("td", style="color: rgb(120, 20, 20)"):
+                                text(reportReader.convert_to_MB(size))
+
                     for timing_info in function["timings"]:
                         with tag("tr"):
                             with tag("td"):
                                 text(cpu_to_device(timing_info["device"]))
                             with tag("td"):
                                 text(beautify_os_name(timing_info["platform"]))   
-                            for size in vector_sizes:        
-                                # print(timing_info["times"].get(size, 0))    
+                            for size in vector_sizes:          
                                 if size in timing_info["times"]:                   
                                     with tag("td"):
-                                        text(round(timing_info["times"].get(size,0), 1))                        
+                                        size_MB = reportReader.convert_to_MB(size)
+                                        text(int(round(size_MB/timing_info["times"].get(size,0), 0)))      
 
-                    # execution_times = []
-                    # for func_info in func_info_list:
-                    #     for func_data in func_info.get("data"):
-                    #         pass
-                            # with tag("tr"):
-                            #     with tag("td", style="text-align:center"):
-                            #         text(cpu_to_device(func_data.get("cpu")))
-                            #     with tag("td", style="text-align:center"):
-                            #         text(beautify_os_name(func_data.get("os")))
-                            #     with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
-                            #         text(func_data.get("avg_time"))                
-
-
-            # for idx, func_info in enumerate(func_info_list): 
-
-            #     column_number = idx%2
-            #     div_float = ""
-            #     div_margin = ""
-            #     if has_multiple_columns:
-            #         div_float = "float: left;"
-                
-            #     if column_number == 1:
-            #         div_margin = "margin-left: 2%;" 
-
-            #     with tag("div", style=f"text-align: center; width: 49%; font-size: 150%; {div_float} {div_margin} border-radius: 10px"): #background-color: rgba(220, 220, 220, 0.3);
-            #         vector_size = func_info.get("buffer_size")
-            #         text(f"Test vector size: {vector_size}")
-
-            #         with tag("table", style="width: 100%; margin: auto;"):
-            #             with tag("tr", style="font-size: 120%"):
-            #                 for header in headers[:len(headers)-1]:
-            #                     with tag("th"):
-            #                         text(header)
-            #                 with tag("th", style="background-color: lightgrey"):
-            #                     text(headers[-1])
-
-            #             for func_data in func_info.get("data"):
-            #                 with tag("tr"):
-            #                     with tag("td", style="text-align:center"):
-            #                         text(cpu_to_device(func_data.get("cpu")))
-            #                     with tag("td", style="text-align:center"):
-            #                         text(beautify_os_name(func_data.get("os")))
-            #                     with tag("td", style="text-align:center; background-color: lightgrey; font-weight: bold"):
-            #                         text(func_data.get("avg_time"))                
-
-#             with tag("div", style="clear:both"): #Separator
-#                 doc.stag("br")
-#                 doc.stag("br")
-#                 doc.stag("br")
+            with tag("div", style="margin: auto; font-size:100%; margin: left; width: 70%;"):
+                with tag("p", style="font-size: 120%; text-align: justify"):
+                        text(function_details)                  
 
 with open("docs/index.html", "w") as html_file:
     html_file.write(doc.getvalue())
