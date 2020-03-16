@@ -184,7 +184,7 @@ with tag("head"):
     with tag("title"):
         text("Byte Transpose Performance Tests")
 
-with tag("body", style="background-image: url(\"static/img/prism.png\"); margin:0; padding:0; "):
+with tag("body", style="background: url(\"static/img/prism.png\") fixed; color: black; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;"):
     
     reportReader = ReportReader(RESULTS_DIRECTORY, FUNCTION_DEFS_FILE)
     headers = ("Device", "OS", "Execution time [s]")
