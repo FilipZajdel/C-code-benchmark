@@ -192,7 +192,7 @@ with tag("head"):
                 }")
 
     with tag("title"):
-        text("Byte Transpose Performance Tests")
+        text("Performance Tests")
 
 with tag("body"):
     
