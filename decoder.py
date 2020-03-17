@@ -2,9 +2,9 @@ from types_wrapper import *
 import numpy as np
 from ctypes import cast, POINTER, c_char
 
+dll_path = r"DLL/ByteTranspose/bin/bytetranspose.so"
 void = None
-dll = C_DLL(r"DLL/ByteTranspose/bin/bytetranspose.so")
-#dll = C_DLL(r"C:\\Users\\Filip\\Downloads\\DLL_V2\\DLL\\DLL\\x64\\Release\\ByteTranspose.dll")
+dll = C_DLL(dll_path)
 
 # void WINAPI TransposeByte8x8(BYTE * source, BYTE * dest,)
 prototype = C_FUNCTYPE(void, POINTER(BYTE),POINTER(BYTE))

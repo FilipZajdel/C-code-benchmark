@@ -5,7 +5,7 @@ import json
 doc, tag, text = Doc().tagtext()
 
 RESULTS_DIRECTORY = "Results"
-FUNCTION_DEFS_FILE = "function_defs.json"
+FUNCTION_DEFS_FILE = "docs/function_defs.json"
 
 class ReportReader:
     def __init__(self, report_dir, function_defs_file):
