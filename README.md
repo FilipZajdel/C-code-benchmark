@@ -22,6 +22,7 @@
 
 ><br>- DLL *(Contains C Code)*
 ><br>- Results *(Test results are saved here)*
+><br>- docs *(contains website files)*
 ><br>- functional_tests.py 
 ><br>- generate_html_report.py *(Generates HTML file filled with results)*
 ><br>- README.md 
