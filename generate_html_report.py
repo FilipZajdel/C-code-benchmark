@@ -262,8 +262,7 @@ with tag("body"):
             text("Configuration of computer devices")
         with tag("div", klass="description"):
             with tag("p"):
-                text("The configuration of computer hardware used for executing tests is shown in table below. It is worth mentioning that \
-                    MSVC compiler was run with default settings, whereas gcc was set to maximum optimization (-O3) in order to improve performance.")
+                text("The configuration of computer hardware and compiler optimization options used for executing tests is shown in tables below.")
 
             with tag("table", style="width: 100%; margin: auto; text-align: center"):
                 with tag("tr"):
@@ -302,6 +301,56 @@ with tag("body"):
                         text("Ubuntu 18.04 (kernel 5.3.0)")
                     with tag("td"):
                         text("Gcc 7.5")
+            
+            with tag("div", style="height: 30px"):
+                pass
+
+            with tag("table", style="width: 100%; margin: auto; text-align: center"):
+                with tag("tr"):
+                    with tag("th"):
+                        text("Optimization")
+                    with tag("th"):
+                        text("Compiler")
+                    with tag("th"):
+                        text("Compiler Settings")
+
+                with tag("tr"):
+                    with tag("td", rowspan="2"):
+                        text("Release")
+                    with tag("td"):
+                        text("GCC")
+                    with tag("td"):
+                        text("Flag: -o3")
+
+                with tag("tr"):
+                    with tag("td"):
+                        text("MSVC")
+                    with tag("td"):
+                        text("Default VS 2019 Release")
+                with tag("tr"):
+                    with tag("td", rowspan="2"):
+                        text("Debug Optimized")
+                    with tag("td"):
+                        text("GCC")
+                    with tag("td"):
+                        text("Flag: -g -o3")
+                with tag("tr"):
+                    with tag("td"):
+                        text("MSVC")
+                    with tag("td"):
+                        text("Default VS 2019 Debug + flag /Ot")
+                with tag("tr"):
+                    with tag("td", rowspan="2"):
+                        text("Debug")
+                    with tag("td"):
+                        text("GCC")
+                    with tag("td"):
+                        text("Flag: -g")
+                with tag("tr"):
+                    with tag("td"):
+                        text("MSVC")
+                    with tag("td"):
+                        text("Default VS 2019 Debug")
 
         with tag("div", klass="chapter"):
             text("Results")
