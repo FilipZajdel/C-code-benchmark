@@ -9,5 +9,7 @@
         }
     },
     "cpu": "ARMv7 Processor rev 3 (v7l)",
-    "compiler": "gcc 8.3"
+    "compiler": "gcc 8.3",
+    "compiler-opt": "-o3",
+    "compiler-opt-desc": "Release"
 }

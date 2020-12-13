@@ -1,31 +1,36 @@
 {
-    "datetime": "03-05-2020-23-20-28",
+    "datetime": "12-13-2020-13-14-30",
     "platform": "linux",
     "functions": {
+        "decode_chip_byte_stream_to_pixel_array": {
+            "avg_time": 8.20476597700008,
+            "repeats": 1,
+            "buffer_size": "109.38 MB"
+        },
         "Deinterleve_16Bytes_to_2x8Bytes": {
-            "avg_time": 1.3228312979999828,
+            "avg_time": 0.41155226299997594,
             "repeats": 1,
             "buffer_size": "109.38 MB"
         },
         "TransposeBits_16xI8_to_8xI16": {
-            "avg_time": 5.077353442999993,
+            "avg_time": 1.1806380009998065,
             "repeats": 1,
             "buffer_size": "109.38 MB"
         },
         "Deinterleve_14x8Words_to_8x14Word": {
-            "avg_time": 1.413496407000025,
+            "avg_time": 0.34925440400002117,
             "repeats": 1,
             "buffer_size": "109.38 MB"
         },
         "TransposeBits_14xI16_to_16xI16": {
-            "avg_time": 14.509485123000104,
+            "avg_time": 6.194363823999993,
             "repeats": 1,
             "buffer_size": "109.38 MB"
         }
     },
-    "cpu": "ARMv7 Processor rev 3 (v7l)",
+    "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",
     "description": "",
-    "compiler": "gcc 8.3",
-    "compiler-opt": "-o3",
-    "compiler-opt-desc": "Release"
+    "compiler": "gcc 7.4",
+    "compiler-opt": "-g -o3",
+    "compiler-opt-desc": "Debug Optimized"
 }

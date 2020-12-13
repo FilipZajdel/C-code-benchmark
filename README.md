@@ -42,7 +42,7 @@ Steps:
 * Go to DLL directory, open ByteTranspose.sln and build it using VS2019
 * Check where dll is put after build and save path
 * Open decoder.py and change dll_path to absolute path where dll is saved
-* Go to section [Tests execution](#tests-execution)
+* Go to section [Running tests](#running-tests)
 
 ## Building on Linux
 
@@ -58,20 +58,24 @@ Steps:
     $ make -j4
 ```
 * Open decoder.py and change dll_path to r"DLL/ByteTranspose/bin/bytetranspose.so"
-* Go to section [Tests execution](#tests-execution)
+* Go to section [Running tests](#running-tests)
 
 ## Running tests
 
 Requirements:
 * Python >= 3.6.9 
-* Numpy
-* yattag (optional - for HTML report generating)
+* pip3
+
+Setup:
+``` sh
+    $ sudo pip3 install -r requirements.txt
+```
 
 Steps:
-* run script run_tests.py (Execution of tests takes some time)
-* results are saved in Results directory
+* run script run_tests.py (Execution of tests takes some time, depending on number of functions tested and test vector size)
+* results are saved in *Results* directory
 
-Each execution of "run_tests.py" produces results file using following format:
+Each execution of "run_tests.py" produces *.json file named after time of test execution using following format:
 
 ```json
 {
@@ -96,11 +100,13 @@ Each execution of "run_tests.py" produces results file using following format:
     },
     "cpu": "string",
     "description": "string",
-    "compiler": "string"
+    "compiler": "string",
+    "compiler-opt": "string",
+    "compiler-opt-desc": "string"
 }
 ```
 
 ## Results
 
-Results of tests executed on PC and Raspberry Pi are presented [here](https://filipzajdel.github.io/C_functions_timing_tests/)
+Results of tests already executed on PC and Raspberry Pi are presented [here](https://filipzajdel.github.io/C_functions_timing_tests/)
 

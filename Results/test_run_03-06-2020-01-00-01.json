@@ -1,1 +1,36 @@
-{"datetime": "03-06-2020-01-00-00", "platform": "linux", "functions": {"decode_chip_byte_stream_to_pixel_array": {"avg_time": 16.238516109000017, "repeats": 1, "buffer_size": "218.75 MB"}, "Deinterleve_16Bytes_to_2x8Bytes": {"avg_time": 0.8192866159999994, "repeats": 1, "buffer_size": "218.75 MB"}, "TransposeBits_16xI8_to_8xI16": {"avg_time": 2.359972784000007, "repeats": 1, "buffer_size": "218.75 MB"}, "Deinterleve_14x8Words_to_8x14Word": {"avg_time": 0.7093791159999796, "repeats": 1, "buffer_size": "218.75 MB"}, "TransposeBits_14xI16_to_16xI16": {"avg_time": 42.684483796999984, "repeats": 1, "buffer_size": "765.62 MB"}}, "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz", "description": "", "compiler": "gcc 7.4"}
+{
+    "datetime": "03-06-2020-01-00-00",
+    "platform": "linux",
+    "functions": {
+        "decode_chip_byte_stream_to_pixel_array": {
+            "avg_time": 16.238516109000017,
+            "repeats": 1,
+            "buffer_size": "218.75 MB"
+        },
+        "Deinterleve_16Bytes_to_2x8Bytes": {
+            "avg_time": 0.8192866159999994,
+            "repeats": 1,
+            "buffer_size": "218.75 MB"
+        },
+        "TransposeBits_16xI8_to_8xI16": {
+            "avg_time": 2.359972784000007,
+            "repeats": 1,
+            "buffer_size": "218.75 MB"
+        },
+        "Deinterleve_14x8Words_to_8x14Word": {
+            "avg_time": 0.7093791159999796,
+            "repeats": 1,
+            "buffer_size": "218.75 MB"
+        },
+        "TransposeBits_14xI16_to_16xI16": {
+            "avg_time": 42.684483796999984,
+            "repeats": 1,
+            "buffer_size": "765.62 MB"
+        }
+    },
+    "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz",
+    "description": "",
+    "compiler": "gcc 7.4",
+    "compiler-opt": "-o3",
+    "compiler-opt-desc": "Release"
+}
