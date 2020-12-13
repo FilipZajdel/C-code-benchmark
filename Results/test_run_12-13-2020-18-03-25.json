@@ -1,0 +1,1 @@
+{"datetime": "12-13-2020-18-03-23", "platform": "win32", "functions": {"TransposeBits_14xI16_to_16xI16": {"avg_time": 27.4818821, "repeats": 1, "buffer_size": "765.62 MB"}}, "cpu": "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz", "description": "", "compiler": "MSVC", "compiler-opt": "-g -o3", "compiler-opt-desc": "Release"}
