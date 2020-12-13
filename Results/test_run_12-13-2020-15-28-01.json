@@ -1,0 +1,1 @@
+{"datetime": "12-13-2020-15-28-01", "platform": "linux", "functions": {"TransposeBits_14xI16_to_16xI16": {"avg_time": 101.72678938099989, "repeats": 1, "buffer_size": "765.62 MB"}}, "cpu": "ARMv7 Processor rev 3 (v7l)", "description": "", "compiler": "gcc 7.4", "compiler-opt": "-g -o3", "compiler-opt-desc": "Debug Optimized"}

@@ -27,17 +27,17 @@ if __name__ == "__main__":
     report_dir = "Results"
     bytestream_size = bytestream_sizes["766MB"] # choose bytestream size to use in this test
 
-    # Comment out unnecessary tests invocations
-    # report["functions"]["decode_chip_byte_stream_to_pixel_array"] = timing_tests.Test_decode_chip_byte_stream_to_pixel_array(bytestream_size)
-    # report["functions"]["Deinterleve_16Bytes_to_2x8Bytes"] = timing_tests.Test_Deinterleve_16Bytes_to_2x8Bytes_bytestream(bytestream_size)
-    # report["functions"]["TransposeBits_16xI8_to_8xI16"] = timing_tests.Test_TransposeBits_16xI8_to_8xI16_bytestream(bytestream_size)
-    # report["functions"]["Deinterleve_14x8Words_to_8x14Word"] = timing_tests.Test_Deinterleve_14x8Words_to_8x14Words_bytestream(bytestream_size)
+   # Comment out unnecessary tests invocations
+ #   report["functions"]["decode_chip_byte_stream_to_pixel_array"] = timing_tests.Test_decode_chip_byte_stream_to_pixel_array(bytestream_size)
+ #   report["functions"]["Deinterleve_16Bytes_to_2x8Bytes"] = timing_tests.Test_Deinterleve_16Bytes_to_2x8Bytes_bytestream(bytestream_size)
+ #   report["functions"]["TransposeBits_16xI8_to_8xI16"] = timing_tests.Test_TransposeBits_16xI8_to_8xI16_bytestream(bytestream_size)
+ #   report["functions"]["Deinterleve_14x8Words_to_8x14Word"] = timing_tests.Test_Deinterleve_14x8Words_to_8x14Words_bytestream(bytestream_size)
     report["functions"]["TransposeBits_14xI16_to_16xI16"] = timing_tests.Test_TransposeBits_14xI16_to_16xI16_bytestream(bytestream_size)
 
     report["description"] =  "" # insert here additional description of test if required
     report["compiler"] = "gcc 7.4" # insert here used compiler
     report["compiler-opt"] = "-g -o3" # insert here compiler optimization flags
-    report["compiler-opt-desc"] = "Debug Optimized" # insert here compiler optimization description: Debug optimized/Debug/Release
+    report["compiler-opt-desc"] = "Debug" # insert here compiler optimization description: Debug optimized/Debug/Release
 
     save_report_as_json(f"Results/test_run_{now}", report)
     print(f"Results of tests on {sys.platform} run at {now}: \n{report}")

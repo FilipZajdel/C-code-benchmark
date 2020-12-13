@@ -1,7 +1,7 @@
 SRC=ByteTranspose.cpp 
 HDR=ByteTranspose.h stdafx.h 
 CC=g++
-CC_OPTS=-g -o3
+CC_OPTS=-g
 
 LIB_OUT=bin
 LIB_NAME=bytetranspose
