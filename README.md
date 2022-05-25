@@ -1,7 +1,7 @@
 # C functions performance tests across different devices
 
 **Table of contents:**
-* [Website](https://filipzajdel.github.io/C_functions_timing_tests/)
+* [Website](https://filipzajdel.github.io/C-code-benchmark/)
 * [Goals](#goals)
 * [Repository structure](#repository-structure)
 * [Building on Windows](#building-on-windows)
